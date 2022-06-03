@@ -1,0 +1,26 @@
+
+POST  http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Binh5456ee",
+  "password":"123456"
+}
+
+###  get by page
+
+
+GET   http://localhost:5000/product/?page=1
+Content-Type: application/json
+
+####  @@@@get by id
+GET   http://localhost:5000/product/detail/?id=62986bc5d7d9c45ec8fe7d77
+Content-Type: application/json
+
+#### @@@@@@@ get by name
+
+GET   http://localhost:5000/product/search/?name=s
+Content-Type: application/json
+
+
+
