@@ -1,0 +1,23 @@
+.wrapper {
+  margin: 50px;
+}
+.heading {
+  margin: 10px;
+  & > h2 {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    line-height: 2.2rem;
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+}
+
+.grid {
+  width: 90%;
+}

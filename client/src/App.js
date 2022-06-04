@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './router/routes';
 import Layout from './components/layout/Layout';
 import AdminLayout from './components/adminLayout/AdminLayout';
+
 function App() {
   return (
     <Router>

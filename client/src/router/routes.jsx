@@ -3,7 +3,9 @@ import Dashboard from '../pages/home/components/Dashboard';
 import Cart from '../pages/cart/components/Cart';
 import Product from '../pages/product/components/Product';
 import Admin from '../pages/admin/components/Admin';
-import Category from '../pages/category/components/Category';
+import Ao from '../pages/category/ao/Ao';
+import Quan from '../pages/category/quan/Quan';
+import Vay from '../pages/category/vay/Vay';
 
 const routes = [
   {
@@ -22,8 +24,23 @@ const routes = [
     layout: 'layout',
   },
   {
-    path: routeConfig.category,
-    element: <Category />,
+    path: routeConfig.ao,
+    element: <Ao />,
+    layout: 'layout',
+  },
+  {
+    path: routeConfig.quan,
+    element: <Quan />,
+    layout: 'layout',
+  },
+  {
+    path: routeConfig.quan,
+    element: <Quan />,
+    layout: 'layout',
+  },
+  {
+    path: routeConfig.vay,
+    element: <Vay />,
     layout: 'layout',
   },
   {
