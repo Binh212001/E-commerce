@@ -1,0 +1,20 @@
+.wrapper {
+  padding: 50px;
+  background-color: var(--footer-bg);
+  color: var(--white);
+}
+.container {
+}
+.logo {
+  text-align: center;
+  margin: 30px;
+  & > img {
+    background-color: var(--footer-bg);
+    color: aqua;
+  }
+}
+.item {
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}

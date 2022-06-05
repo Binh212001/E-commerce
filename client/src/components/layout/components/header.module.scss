@@ -7,6 +7,9 @@
   width: 100%;
 
   background-color: var(--slugon-bg);
+  & > h4 {
+    color: var(--primary-color) !important;
+  }
 }
 
 .main {
@@ -36,14 +39,18 @@
 .box {
   width: 250px;
   display: flex;
-  border-bottom: 1px solid green;
+  border-bottom: 1px solid var(--primary-color);
   & > input {
     flex: 1;
     appearance: textfield;
     border: none;
     outline: none;
     padding: 0 10px;
-    caret-color: green;
+    caret-color: var(--primary-color);
+  }
+  & > span {
+    color: var(--primary-color);
+    cursor: pointer;
   }
 }
 

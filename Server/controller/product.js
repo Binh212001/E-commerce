@@ -10,7 +10,16 @@ const getAllProduct = async (req, res) => {
       const product = await Pagination(page);
 
       if (product.length > 0) {
-        return res.status(200).json({ product });
+        let total = await Product.estimatedDocumentCount()
+          .then((docCount) => {
+            return docCount;
+            //and do one super neat trick
+          })
+          .catch((err) => {
+            //handle possible errors
+            throw new Error(err);
+          });
+        return res.status(200).json({ product, total });
       }
       return res.status(404).json({
         message: `There is not page ${page}`,

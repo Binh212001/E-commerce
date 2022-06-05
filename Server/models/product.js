@@ -5,12 +5,17 @@ const { Schema } = mongoose;
 const productSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    require: true,
   },
   img: {
     type: String,
-    required: true,
+    require: true,
   },
+  color: {
+    type: [],
+    require: true,
+  },
+
   description: {
     type: String,
     required: true,
