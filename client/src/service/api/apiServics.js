@@ -4,9 +4,19 @@ import queryString from 'query-string';
 const apiService = {
   getProductPage: (page) => {
     const pageApi = queryString.stringify(page);
-    console.log('🚀 ~ file: apiServics.js ~ line 7 ~ pageApi', pageApi);
     const url = `/product/?${pageApi}`;
 
+    return apiConfig.get(url);
+  },
+  searchProduct: (param) => {
+    const keyname = queryString.stringify(param);
+
+    const url = `/product/search/?${keyname}`;
+    return apiConfig.get(url);
+  },
+  getProductId: (param) => {
+    const id = queryString.stringify(param);
+    const url = `/product/detail/?${id}`;
     return apiConfig.get(url);
   },
 };

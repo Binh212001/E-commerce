@@ -1,10 +1,12 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import productReducer from './product/reducer';
+import productRdc from './product/reducer';
 import thunk from 'redux-thunk';
-import { useSelector } from 'react-redux';
+import searchReducer from './search.js/reducer';
 const rootReducer = combineReducers({
-  productPage: productReducer,
+  productPage: productRdc.productReducer,
+  searchProduct: searchReducer,
+  selectedProduct: productRdc.selectedProductsReducer,
 });
 const middlewares = [thunk];
 

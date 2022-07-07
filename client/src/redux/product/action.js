@@ -18,3 +18,19 @@ export const actFetchProduct = (products) => {
     products,
   };
 };
+
+export const getProductIdPending = (param) => {
+  return (dispatch) => {
+    apiService
+      .getProductId(param)
+      .then((res) => dispatch(getProductIdSuccess(res)))
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getProductIdSuccess = (data) => {
+  return {
+    type: Types.GET_A_PRODUCT,
+    payload: data,
+  };
+};

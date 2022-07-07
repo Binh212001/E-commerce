@@ -32,10 +32,7 @@ const productSchema = new Schema({
     type: String,
     ref: 'comment',
   },
-  storeId: {
-    type: String,
-    ref: 'store',
-  },
+
   createAt: {
     type: Date,
     default: Date.now(),

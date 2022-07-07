@@ -1,11 +1,12 @@
 const routeConfig = {
   home: '/',
   cart: '/cart',
-  product: '/product:id',
+  productdetail: '/product/:id',
   admin: '/admin',
   ao: '/category/ao',
   quan: '/category/quan',
   vay: '/category/vay',
+  search: 'search/:name',
 };
 
 export default routeConfig;

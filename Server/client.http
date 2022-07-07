@@ -14,13 +14,14 @@ GET   http://localhost:5000/product/?page=1
 Content-Type: application/json
 
 ####  @@@@get by id
-GET   http://localhost:5000/product/detail/?id=62986bc5d7d9c45ec8fe7d77
+GET   http://localhost:5000/product/detail/?id=629b2f7244cdb5374d016f69
+
 Content-Type: application/json
 
 #### @@@@@@@ get by name
 
-GET   http://localhost:5000/product/search/?name=s
+GET   http://localhost:5000/product/search/?name=short
+
+
 Content-Type: application/json
-
-
 

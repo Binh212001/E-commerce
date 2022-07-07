@@ -1,11 +1,12 @@
 import routeConfig from '../config/router';
 import Dashboard from '../pages/home/components/Dashboard';
 import Cart from '../pages/cart/components/Cart';
-import Product from '../pages/product/components/Product';
 import Admin from '../pages/admin/components/Admin';
 import Ao from '../pages/category/ao/Ao';
 import Quan from '../pages/category/quan/Quan';
 import Vay from '../pages/category/vay/Vay';
+import ProductDetail from '../pages/product/components/ProductDetail';
+import Search from '../pages/search/Search';
 
 const routes = [
   {
@@ -19,8 +20,8 @@ const routes = [
     layout: 'layout',
   },
   {
-    path: routeConfig.product,
-    element: <Product />,
+    path: routeConfig.productdetail,
+    element: <ProductDetail />,
     layout: 'layout',
   },
   {
@@ -47,6 +48,11 @@ const routes = [
     path: routeConfig.admin,
     element: <Admin />,
     layout: 'admin',
+  },
+  {
+    path: routeConfig.search,
+    element: <Search />,
+    layout: 'layout',
   },
 ];
 

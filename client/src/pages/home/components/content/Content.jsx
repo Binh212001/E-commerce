@@ -12,21 +12,21 @@ function Content() {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.productPage);
+  console.log('🚀 ~ file: Content.jsx ~ line 15 ~ Content ~ data', data);
   useEffect(() => {
     dispatch(fetchProductRequest(currentPage));
   }, [dispatch, currentPage]);
-  const { product, total } = data;
 
   return (
     <div className={cx('wrapper')}>
       <div>
         <div className={cx('heading')}>
-          <h2>POLO YODY - THOẢI MÁI, TỰ TIN MỌI LÚC MỌI NƠI</h2>
+          <h2>POLO YODY - THOẢI MÁI, TỰ TIN MỌI LÚC MỌI NƠI </h2>
         </div>
         <div className={cx('main')}>
           <div className={cx('grid')}>
-            <Row gutter={6}>
-              {product.map((item, index) => (
+            <Row gutter={12}>
+              {data.product.map((item, index) => (
                 <ProductItem key={index} data={item} />
               ))}
             </Row>

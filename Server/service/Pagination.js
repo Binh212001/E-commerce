@@ -5,8 +5,8 @@ const Pagination = async (page) => {
     page = 1;
   }
   const product = await Product.find({})
-    .limit(2)
-    .skip((page - 1) * 2);
+    .limit(4)
+    .skip((page - 1) * 4);
   return product;
 };
 module.exports = Pagination;
