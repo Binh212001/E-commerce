@@ -1,10 +1,10 @@
-import { Row, Col } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Row } from 'antd';
 import classNames from 'classnames/bind';
-import style from './content.module.scss';
-import ProductItem from '../../../../components/product/ProductItem';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ProductItem from '../../../../components/product/ProductItem';
 import { fetchProductRequest } from '../../../../redux/product/action';
+import style from './content.module.scss';
 
 const cx = classNames.bind(style);
 function Content() {
@@ -12,7 +12,6 @@ function Content() {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.productPage);
-  console.log('🚀 ~ file: Content.jsx ~ line 15 ~ Content ~ data', data);
   useEffect(() => {
     dispatch(fetchProductRequest(currentPage));
   }, [dispatch, currentPage]);

@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const commentSchema = new Schema({
   comment: {
     type: String,
-    required: true,
+    require: true,
   },
 
   userId: {

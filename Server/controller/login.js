@@ -26,6 +26,7 @@ const login = async (req, res) => {
     }
     const token = jwt.sign(username, '********');
     return res.json({
+      username: oldUser.username,
       token,
       message: 'SignIn successfully',
     });

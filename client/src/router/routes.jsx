@@ -7,6 +7,7 @@ import Quan from '../pages/category/quan/Quan';
 import Vay from '../pages/category/vay/Vay';
 import ProductDetail from '../pages/product/components/ProductDetail';
 import Search from '../pages/search/Search';
+import Auth from '../pages/auth/Auth';
 
 const routes = [
   {
@@ -34,11 +35,7 @@ const routes = [
     element: <Quan />,
     layout: 'layout',
   },
-  {
-    path: routeConfig.quan,
-    element: <Quan />,
-    layout: 'layout',
-  },
+
   {
     path: routeConfig.vay,
     element: <Vay />,
@@ -52,6 +49,11 @@ const routes = [
   {
     path: routeConfig.search,
     element: <Search />,
+    layout: 'layout',
+  },
+  {
+    path: routeConfig.auth,
+    element: <Auth />,
     layout: 'layout',
   },
 ];

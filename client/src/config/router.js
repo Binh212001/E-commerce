@@ -7,6 +7,7 @@ const routeConfig = {
   quan: '/category/quan',
   vay: '/category/vay',
   search: 'search/:name',
+  auth: '/auth',
 };
 
 export default routeConfig;

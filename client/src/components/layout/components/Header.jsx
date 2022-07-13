@@ -2,14 +2,16 @@ import React from 'react';
 import style from './header.module.scss';
 import className from 'classnames/bind';
 import logo from '../../../assets/img/logo.webp';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   SearchOutlined,
   LoginOutlined,
   ShoppingCartOutlined,
 } from '@ant-design/icons';
-
-import { Typography } from 'antd';
+import { Dropdown, Menu, Space } from 'antd';
+import { fetchLogOut } from '../../../redux/auth/action';
+import { Avatar, Typography } from 'antd';
 import CustomLink from '../../Link/CustomLink';
 import { listMenu } from './MenuList';
 import { useState } from 'react';
@@ -20,19 +22,44 @@ const { Title } = Typography;
 const cx = className.bind(style);
 
 function Header() {
-  const [keySearch, setKeySearch] = useState(''); // eslint-disable-next-line
-
+  const [keySearch, setKeySearch] = useState('');
+  const auth = useSelector((state) => state.user);
+  const { user } = auth;
+  console.log('🚀 ~ file: Header.jsx ~ line 38 ~ Header ~ user', user);
   const debounceInput = useDebounce(keySearch, 500);
+  const dispatch = useDispatch();
 
-  const nagitive = useNavigate();
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     setKeySearch(e.target.value);
   };
 
   const handleClickSearch = (value) => {
-    nagitive(`/search/${value}`);
+    navigate(`/search/${value}`);
   };
+
+  const logOut = () => {
+    dispatch(fetchLogOut());
+  };
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <span
+              onClick={() => {
+                logOut();
+              }}>
+              Dang Xuat
+            </span>
+          ),
+          key: '0',
+        },
+      ]}
+    />
+  );
   return (
     <div className={cx('wrapper')}>
       <div className={cx('slugon')}>
@@ -61,14 +88,22 @@ function Header() {
         </div>
 
         <div className={cx('tool')}>
-          <Link to='/login'>
-            <LoginOutlined
-              style={{
-                frontSize: '20px',
-              }}
-            />
-          </Link>
-          <Link to='/cart'>
+          {user ? (
+            <Dropdown overlay={menu} placement='bottom'>
+              <span>
+                <Avatar size={'small'} />
+              </span>
+            </Dropdown>
+          ) : (
+            <Link to='/auth'>
+              <LoginOutlined
+                style={{
+                  frontSize: '20px',
+                }}
+              />
+            </Link>
+          )}
+          <Link to={user ? '/cart' : '/auth'}>
             <ShoppingCartOutlined
               style={{
                 frontSize: '20px',

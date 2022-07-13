@@ -19,6 +19,11 @@ const apiService = {
     const url = `/product/detail/?${id}`;
     return apiConfig.get(url);
   },
+
+  postUser: (user) => {
+    const url = 'auth/login';
+    return apiConfig.post(url, user);
+  },
 };
 
 export default apiService;
