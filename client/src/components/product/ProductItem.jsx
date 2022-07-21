@@ -1,12 +1,18 @@
 import React from 'react';
 import { Col, Card } from 'antd';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames/bind';
 import style from './productItem.scss';
+import classNames from 'classnames/bind';
+import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(style);
+
 const { Meta } = Card;
 
 function ProductItem({ data }) {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const handleAddToCart = (data) => {};
+
   return (
     <Col xs={24} sm={24} md={12} lg={6}>
       <Link to={`/product/${data._id}`}>
@@ -19,7 +25,11 @@ function ProductItem({ data }) {
             <div className={cx('card_price')}> {data.price} vnd</div>
           </div>
           <div className={cx('card_btn')}>
-            <button className={cx('btn_add')}>Add to card</button>
+            <button
+              className={cx('btn_add')}
+              onClick={() => handleAddToCart(data)}>
+              Add to card
+            </button>
           </div>
         </div>
       </Link>

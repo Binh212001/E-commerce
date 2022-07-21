@@ -1,19 +1,23 @@
-import { Row, Col, Typography, Button, Divider } from 'antd';
-import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProductIdPending } from '../../../redux/product/action';
-import { useState } from 'react';
-import style from './productDetail.scss';
+import { Button, Col, Divider, Row, Typography } from 'antd';
+import axios from 'axios';
 import className from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getProductIdPending } from '../../../redux/product/action';
+import style from './productDetail.scss';
 
 const cx = className.bind(style);
 function ProductDetail() {
   const params = useParams();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [currentColor, setColor] = useState('black');
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const product = useSelector((state) => state.selectedProduct);
+  const auth = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getProductIdPending(params));
   }, [params, dispatch]);
@@ -24,6 +28,21 @@ function ProductDetail() {
     }
     if (otp === '-' && qty > 1) {
       setQty(qty - 1);
+    }
+  };
+
+  const handleAddToCart = async (product, auth, color) => {
+    if (auth.user) {
+      await axios.post('http://localhost:5000/cart/product', {
+        productId: product._id,
+        id: auth.user._id,
+        qty,
+        total: product.price * qty,
+        color: currentColor,
+      });
+      navigate('/cart');
+    } else {
+      navigate('/auth');
     }
   };
 
@@ -56,7 +75,10 @@ function ProductDetail() {
               {product.color.map((color, index) => (
                 <li
                   key={index}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    setColor(color);
+                  }}
                   style={{
                     width: '30px',
                     height: '30px ',
@@ -77,10 +99,12 @@ function ProductDetail() {
               <button onClick={() => handleQty('+')}>+</button>
             </div>
             <div>
+              <div>Total: {qty * product.price} vnd</div>
               <br />
-              <Link to='/cart'>
-                <Button>Them va gio hang</Button>
-              </Link>
+
+              <Button onClick={() => handleAddToCart(product, auth)}>
+                Them va gio hang
+              </Button>
             </div>
           </Col>
         </Row>

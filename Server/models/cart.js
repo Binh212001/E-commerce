@@ -8,16 +8,19 @@ const cartSchema = new Schema({
     require: true,
   },
   productId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'product',
+  },
+  color: {
     type: String,
     require: true,
-    ref: 'products',
   },
 
   total: {
     type: Number,
   },
 
-  amount: {
+  qty: {
     type: Number,
   },
   createAt: {

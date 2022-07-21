@@ -25,7 +25,6 @@ function Header() {
   const [keySearch, setKeySearch] = useState('');
   const auth = useSelector((state) => state.user);
   const { user } = auth;
-  console.log('🚀 ~ file: Header.jsx ~ line 38 ~ Header ~ user', user);
   const debounceInput = useDebounce(keySearch, 500);
   const dispatch = useDispatch();
 

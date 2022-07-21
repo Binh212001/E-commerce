@@ -1,0 +1,16 @@
+.cart {
+  display: flex;
+  justify-content: center;
+}
+.content {
+  width: 1200px;
+}
+.item {
+  border: 1px solid greenyellow;
+  padding: 12px;
+}
+
+.price {
+  text-align: right;
+  font-weight: bold;
+}

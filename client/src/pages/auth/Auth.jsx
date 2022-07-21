@@ -9,6 +9,7 @@ function Auth() {
   const navigate = useNavigate();
   const onFinish = (values) => {
     dispatch(fetchLoginPending(values));
+    
     navigate('/');
   };
 
