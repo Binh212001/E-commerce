@@ -17,3 +17,10 @@ export const getCartSuccess = (data) => {
     cartItems: data,
   };
 };
+
+export const removeCartItem = (id) => {
+  return {
+    type: Types.REMOVE_CART_ITEM,
+    payload: id,
+  };
+};

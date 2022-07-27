@@ -1,16 +1,11 @@
+import { Col } from 'antd';
+import classNames from 'classnames/bind';
 import React from 'react';
-import { Col, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import style from './productItem.scss';
-import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(style);
 
-const { Meta } = Card;
-
 function ProductItem({ data }) {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
   const handleAddToCart = (data) => {};
 
   return (

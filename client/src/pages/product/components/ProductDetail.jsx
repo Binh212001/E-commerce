@@ -31,7 +31,7 @@ function ProductDetail() {
     }
   };
 
-  const handleAddToCart = async (product, auth, color) => {
+  const handleAddToCart = async (product, auth) => {
     if (auth.user) {
       await axios.post('http://localhost:5000/cart/product', {
         productId: product._id,

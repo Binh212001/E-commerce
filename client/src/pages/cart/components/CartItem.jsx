@@ -1,11 +1,17 @@
 import { Button, Col, Row, Typography } from 'antd';
 import classNames from 'classnames/bind';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { removeCartItem } from '../../../redux/cart/action';
 import style from './cart.module.scss';
 const cx = classNames.bind(style);
 
 function CartItem({ item }) {
-  console.log('🚀 ~ file: CartItem.jsx ~ line 8 ~ CartItem ~ item', item);
+  const dispatch = useDispatch();
+
+  const handleDeleteItem = (id) => {
+    dispatch(removeCartItem(id));
+  };
   return (
     <Row
       className={cx('item')}
@@ -28,8 +34,13 @@ function CartItem({ item }) {
       <Col sm={24} md={8} lg={8}>
         <div className={cx('price')}>{item.productId.price} vnd</div>
       </Col>
-      <Button type='primary'> Mua hang</Button>
-      <Button type='danger'> Delete</Button>
+      <Button type='primary' onClick={() => alert(' Mua hang thanh cong')}>
+        {' '}
+        Mua hang
+      </Button>
+      <Button type='danger' onClick={() => handleDeleteItem(item._id)}>
+        Delete
+      </Button>
     </Row>
   );
 }

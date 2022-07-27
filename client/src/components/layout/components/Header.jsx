@@ -1,20 +1,18 @@
-import React from 'react';
-import style from './header.module.scss';
-import className from 'classnames/bind';
-import logo from '../../../assets/img/logo.webp';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import {
-  SearchOutlined,
   LoginOutlined,
+  SearchOutlined,
   ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Dropdown, Menu, Space } from 'antd';
+import { Avatar, Dropdown, Menu, Typography } from 'antd';
+import className from 'classnames/bind';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../../assets/img/logo.webp';
 import { fetchLogOut } from '../../../redux/auth/action';
-import { Avatar, Typography } from 'antd';
 import CustomLink from '../../Link/CustomLink';
+import style from './header.module.scss';
 import { listMenu } from './MenuList';
-import { useState } from 'react';
 import useDebounce from './useDebounce';
 
 const { Title } = Typography;
@@ -23,10 +21,14 @@ const cx = className.bind(style);
 
 function Header() {
   const [keySearch, setKeySearch] = useState('');
-  const auth = useSelector((state) => state.user);
-  const { user } = auth;
+  const auth = useSelector((state) => state.user.user);
+
   const debounceInput = useDebounce(keySearch, 500);
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getAuth());
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -39,7 +41,9 @@ function Header() {
   };
 
   const logOut = () => {
+    localStorage.removeItem('auth');
     dispatch(fetchLogOut());
+    navigate('/');
   };
 
   const menu = (
@@ -87,7 +91,7 @@ function Header() {
         </div>
 
         <div className={cx('tool')}>
-          {user ? (
+          {auth ? (
             <Dropdown overlay={menu} placement='bottom'>
               <span>
                 <Avatar size={'small'} />
@@ -102,7 +106,7 @@ function Header() {
               />
             </Link>
           )}
-          <Link to={user ? '/cart' : '/auth'}>
+          <Link to={auth ? '/cart' : '/auth'}>
             <ShoppingCartOutlined
               style={{
                 frontSize: '20px',

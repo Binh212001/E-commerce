@@ -7,9 +7,9 @@ function Auth() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    dispatch(fetchLoginPending(values));
-    
+  const onFinish = async (values) => {
+    const auth = await dispatch(fetchLoginPending(values));
+    localStorage.setItem('auth', JSON.stringify(auth.payload));
     navigate('/');
   };
 
