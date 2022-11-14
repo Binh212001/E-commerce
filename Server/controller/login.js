@@ -18,14 +18,16 @@ const login = async (req, res) => {
       });
     }
 
-    const isvalidatePassword = bcrypt.compare(password, oldUser.password);
+    const isvalidatePassword = await bcrypt.compare(password, oldUser.password);
+
     if (!isvalidatePassword) {
       return res.status(400).json({
         message: 'username or password invalid',
       });
     }
-    const token = jwt.sign(username, '********');
+    const token = jwt.sign({ username }, '********');
     return res.json({
+      _id: oldUser._id,
       username: oldUser.username,
       token,
       message: 'SignIn successfully',

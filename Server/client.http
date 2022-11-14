@@ -1,10 +1,19 @@
 
+POST  http://localhost:5000/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password":"111111"
+}
+###
+
 POST  http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-  "username": "Binh5456ee",
-  "password":"123456"
+  "username": "admin",
+  "password":"111111"
 }
 
 ###  get by page
@@ -25,3 +34,34 @@ GET   http://localhost:5000/product/search/?name=short
 
 Content-Type: application/json
 
+#### het cart
+
+
+GET   http://localhost:5000/cart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjU3ODc1NTA0fQ.yXPVx2aDqWz3tsbXw2QsudnIhOGsbZOsNOMzvYH3-fE
+
+
+#### add to cart
+
+
+POST    http://localhost:5000/cart/product
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjU3ODc1NTA0fQ.yXPVx2aDqWz3tsbXw2QsudnIhOGsbZOsNOMzvYH3-fE
+
+
+{
+  
+  "id":"62ce7216664b214b2496b8f0",
+  "product":"kasfjk"
+}
+
+####
+POST   http://localhost:5000/cart/get
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjU3ODc1NTA0fQ.yXPVx2aDqWz3tsbXw2QsudnIhOGsbZOsNOMzvYH3-fE
+
+
+{
+  "id":"62d7eeb8a31051d511f02569"
+}

@@ -3,3 +3,5 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
 
 export const USER_LOG_OUT = 'USER_LOG_OUT';
+
+// export const LOGIN_USER_AVAILABLE = 'LOGIN_USER_AVAILABLE';

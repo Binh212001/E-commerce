@@ -26,3 +26,9 @@ export const fetchLogOut = () => {
     type: Type.USER_LOG_OUT,
   };
 };
+
+// export const getAuth = () => {
+//   return {
+//     type: Type.LOGIN_USER_AVAILABLE,
+//   };
+// };

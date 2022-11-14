@@ -24,6 +24,13 @@ const apiService = {
     const url = 'auth/login';
     return apiConfig.post(url, user);
   },
+
+  getCartItem: (id) => {
+    const url = 'cart/get';
+    return apiConfig.post(url, {
+      id,
+    });
+  },
 };
 
 export default apiService;

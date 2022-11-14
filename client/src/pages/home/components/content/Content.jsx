@@ -8,7 +8,7 @@ import style from './content.module.scss';
 
 const cx = classNames.bind(style);
 function Content() {
-  const [currentPage, setCurrentPage] = useState({ page: 1 });
+  const [currentPage, setCurrentPage] = useState({ page: 1 }); // eslint-disable-next-line
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.productPage);

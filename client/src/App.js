@@ -1,8 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import routes from './router/routes';
-import Layout from './components/layout/Layout';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminLayout from './components/adminLayout/AdminLayout';
-import { useSelector } from 'react-redux';
+import Layout from './components/layout/Layout';
+import routes from './router/routes';
 
 function App() {
   return (
