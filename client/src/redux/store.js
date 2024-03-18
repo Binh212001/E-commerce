@@ -1,22 +1,9 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import productRdc from './product/reducer';
-import thunk from 'redux-thunk';
-import searchReducer from './search.js/reducer';
-import { authReducer } from './auth/reducer';
-import cartReducer from './cart/reducer';
-const rootReducer = combineReducers({
-  productPage: productRdc.productReducer,
-  searchProduct: searchReducer,
-  user: authReducer,
-  cartItems: cartReducer,
-  selectedProduct: productRdc.selectedProductsReducer,
+import { configureStore } from "@reduxjs/toolkit";
+import logger from "redux-logger";
+import product from "./productSlice";
+const rootReducer = { product };
+
+export const store = configureStore({
+  reducer: rootReducer,
+//   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
-const middlewares = [thunk];
-
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(...middlewares)),
-);
-
-export default store;

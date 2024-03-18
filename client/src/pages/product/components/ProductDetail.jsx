@@ -1,92 +1,65 @@
 import { Button, Col, Divider, Row, Typography } from 'antd';
-import axios from 'axios';
-import className from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getProductIdPending } from '../../../redux/product/action';
-import style from './productDetail.scss';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getProductById } from '../../../redux/productAction';
+import baseApi from '../../../api/BaseApi';
 
-const cx = className.bind(style);
 function ProductDetail() {
-  const params = useParams();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [currentColor, setColor] = useState('black');
+  const {id} = useParams();
   const [qty, setQty] = useState(1);
-  const dispatch = useDispatch();
-  const product = useSelector((state) => state.selectedProduct);
-  const auth = useSelector((state) => state.user);
+  const [product, setProduct]= useState({})
+  console.log("🚀 ~ ProductDetail ~ product:", product)
+  
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(getProductIdPending(params));
-  }, [params, dispatch]);
 
+  useEffect(()=>{
+    const fetchProduct = async() =>{
+      const p =  await baseApi.get("http://localhost:8080/product/"+id)
+      setProduct(p.data)
+    }
+    fetchProduct()
+  },[id])
+
+
+  
   const handleQty = (otp) => {
-    if (otp === '+') {
-      setQty(qty + 1);
-    }
-    if (otp === '-' && qty > 1) {
-      setQty(qty - 1);
-    }
+   otp === "+" ?  setQty(qty + 1):setQty(qty - 1)
   };
 
-  const handleAddToCart = async (product, auth) => {
-    if (auth.user) {
-      await axios.post('http://localhost:5000/cart/product', {
-        productId: product._id,
-        id: auth.user._id,
-        qty,
-        total: product.price * qty,
-        color: currentColor,
-      });
-      navigate('/cart');
-    } else {
-      navigate('/auth');
-    }
-  };
 
   return (
-    <div className={cx('wrapper')}>
-      <div className={cx('content')}>
+    <div className="mx-7 my-auto p-4">
+      <div >
         <Row>
           <Col
+           className='flex justify-center'
             xs={24}
             sm={12}
             md={12}
-            style={{ display: 'flex', justifyContent: 'center' }}>
+           >
             <img
-              src={product.img}
+              src=""
               alt='anh'
-              style={{
-                height: '300px',
-                width: 'auto',
-              }}
+              className='h-[300px] w-auto'
             />
           </Col>
           <Col xs={24} sm={12} md={12}>
-            <Typography>{product.name}</Typography>
+            <Typography>{product.title}</Typography>
             <Typography>{product.description}</Typography>
             <div
-              style={{
-                display: 'flex',
-                gap: '20px',
-              }}>
+             className='flex gap-5'>
               {product.color.map((color, index) => (
                 <li
                   key={index}
                   onClick={() => {
-                    setActiveIndex(index);
-                    setColor(color);
+          
                   }}
+                  className={`w-[30px] h-[30px]`}
                   style={{
-                    width: '30px',
-                    height: '30px ',
                     backgroundColor: color,
                     borderRadius: '50%',
-                    border: ` 2px solid ${
-                      activeIndex === index ? 'red' : '#333'
-                    }`,
+                    
                   }}
                 />
               ))}
@@ -99,16 +72,16 @@ function ProductDetail() {
               <button onClick={() => handleQty('+')}>+</button>
             </div>
             <div>
-              <div>Total: {qty * product.price} vnd</div>
+              <div>Total: {qty * product.price }vnd</div>
               <br />
 
-              <Button onClick={() => handleAddToCart(product, auth)}>
+              <Button >
                 Them va gio hang
               </Button>
             </div>
           </Col>
         </Row>
-        <Divider orientation='left' className={cx('comment')} plain={false}>
+        <Divider orientation='left' className='comment' plain={false}>
           <b>Comment</b>
         </Divider>
       </div>

@@ -3,47 +3,32 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Avatar, Dropdown, Menu, Typography } from 'antd';
-import className from 'classnames/bind';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Avatar, Dropdown, Menu } from 'antd';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../assets/img/logo.webp';
-import { fetchLogOut } from '../../../redux/auth/action';
 import CustomLink from '../../Link/CustomLink';
-import style from './header.module.scss';
 import { listMenu } from './MenuList';
 import useDebounce from './useDebounce';
 
-const { Title } = Typography;
 
-const cx = className.bind(style);
 
 function Header() {
   const [keySearch, setKeySearch] = useState('');
-  const auth = useSelector((state) => state.user.user);
 
   const debounceInput = useDebounce(keySearch, 500);
-  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getAuth());
-  // }, []);
 
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
-    setKeySearch(e.target.value);
   };
 
   const handleClickSearch = (value) => {
-    navigate(`/search/${value}`);
   };
 
   const logOut = () => {
-    localStorage.removeItem('auth');
-    dispatch(fetchLogOut());
-    navigate('/');
+ 
   };
 
   const menu = (
@@ -64,34 +49,36 @@ function Header() {
     />
   );
   return (
-    <div className={cx('wrapper')}>
-      <div className={cx('slugon')}>
-        <Title level={4}>Be good - Do good - Feel good</Title>
+    <div className="w-full">
+      <div className="text-center w-full bg-slugon-bg">
+        <h3  className="text-yellow-yody text-xl font-bold" >Be good - Do good - Feel good</h3>
       </div>
-      <div className={cx('main')}>
-        <div className={cx('search')}>
-          <div className={cx('box')}>
+      <div className="m-auto items-center my-9" style={{
+         display: "grid",
+         gridTemplateColumns: "repeat(3, 1fr)"
+      }}>
+        <div className="flex justify-center">
+          <div className="w-[250px] flex  border-yellow-yody border-b-2">
             <input
+            className='flex-1 border-none outline-none px-2 caret-yellow-yody'
               type='text'
+              required
               placeholder='Find product here'
               onChange={handleSearch}
             />
             <SearchOutlined
               onClick={() => handleClickSearch(debounceInput)}
-              style={{
-                frontSize: '20px',
-              }}
             />
           </div>
         </div>
-        <div className={cx('logo')}>
+        <div className="text-center flex justify-center">
           <Link to='/'>
-            <img src={logo} alt='logo' className={cx('branch')} />
+            <img src={logo} alt='logo' className='w-[200px]' />
           </Link>
         </div>
 
-        <div className={cx('tool')}>
-          {auth ? (
+        <div className="flex justify-center  font-bold  gap-6">
+          {/* {auth ? (
             <Dropdown overlay={menu} placement='bottom'>
               <span>
                 <Avatar size={'small'} />
@@ -105,21 +92,21 @@ function Header() {
                 }}
               />
             </Link>
-          )}
-          <Link to={auth ? '/cart' : '/auth'}>
+          )} */}
+          {/* <Link to={auth ? '/cart' : '/auth'}>
             <ShoppingCartOutlined
               style={{
                 frontSize: '20px',
               }}
             />
-          </Link>
+          </Link> */}
         </div>
       </div>
 
       {/* -------------Menu------------------ */}
 
-      <nav className={cx('nav')}>
-        <ul className={cx('list')}>
+      <nav className="flex justify-center mt-6">
+        <ul className="flex justify-between w-[500px]">
           {listMenu.map((link, index) => {
             return (
               <CustomLink to={`/category${link.to}`} key={index}>

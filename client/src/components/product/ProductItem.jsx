@@ -1,34 +1,31 @@
 import { Col } from 'antd';
-import classNames from 'classnames/bind';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import style from './productItem.scss';
-const cx = classNames.bind(style);
 
 function ProductItem({ data }) {
   const handleAddToCart = (data) => {};
 
   return (
-    <Col xs={24} sm={24} md={12} lg={6}>
-      <Link to={`/product/${data._id}`}>
-        <div className={cx('card')}>
-          <div className={cx('card_img')}>
-            <img src={data.img} alt={data.name} />
+    <div >
+      <Link to={`/product/${data.pid}`}>
+        <div className="flex rounded-[2px] flex-col w-full h-full card">
+          <div className="object-cover">
+            <img src="https://bizweb.dktcdn.net/100/438/408/products/sam7043-den-qsm5057-xnh-10.jpg?v=1709778203083" alt={data.title} className='block w-full h-auto' />
           </div>
-          <div className={cx('card_body')}>
-            <h3 className={cx('card_title')}>{data.name}</h3>
-            <div className={cx('card_price')}> {data.price} vnd</div>
+          <div className="flex-1">
+            <h3 className="font-bold p-2">{data.title}</h3>
+            <div className="text-center m-[10px]"> {data.price} vnd</div>
           </div>
-          <div className={cx('card_btn')}>
+          <div className="flex justify-center">
             <button
-              className={cx('btn_add')}
+              className='btn_add'
               onClick={() => handleAddToCart(data)}>
               Add to card
             </button>
           </div>
         </div>
       </Link>
-    </Col>
+    </div>
   );
 }
 

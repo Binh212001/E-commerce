@@ -1,16 +1,10 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchLoginPending } from '../../redux/auth/action';
 function Auth() {
-  const dispatch = useDispatch();
 
-  const navigate = useNavigate();
   const onFinish = async (values) => {
-    const auth = await dispatch(fetchLoginPending(values));
-    localStorage.setItem('auth', JSON.stringify(auth.payload));
-    navigate('/');
+    
   };
 
   const onFinishFailed = (errorInfo) => {

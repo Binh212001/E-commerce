@@ -1,36 +1,39 @@
-import { Row } from 'antd';
-import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductItem from '../../../../components/product/ProductItem';
-import { fetchProductRequest } from '../../../../redux/product/action';
-import style from './content.module.scss';
+import { getProduct } from '../../../../redux/productAction';
 
-const cx = classNames.bind(style);
 function Content() {
-  const [currentPage, setCurrentPage] = useState({ page: 1 }); // eslint-disable-next-line
+  const [pagination, setPagination] = useState({page:0, limit:10})
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.productPage);
-  useEffect(() => {
-    dispatch(fetchProductRequest(currentPage));
-  }, [dispatch, currentPage]);
+  useEffect(()=>{
+    dispatch(getProduct(pagination))
+  },[dispatch , pagination])
+
+  const  {products, count } = useSelector(state=>state.product)
 
   return (
-    <div className={cx('wrapper')}>
+    <div className='my-[50px]' >
       <div>
-        <div className={cx('heading')}>
-          <h2>POLO YODY - THOẢI MÁI, TỰ TIN MỌI LÚC MỌI NƠI </h2>
+        <div className='text-center font-bold '>
+          <h2 className='text-yellow-yody'>POLO YODY - THOẢI MÁI, TỰ TIN MỌI LÚC MỌI NƠI </h2>
         </div>
-        <div className={cx('main')}>
-          <div className={cx('grid')}>
-            <Row gutter={12}>
-              {data.product.map((item, index) => (
+       
+       <div className='flex'>
+
+          <div style={{width:"20%"}}>
+            Hi
+          </div>
+          <div  style={{width:"80%"}} className='grid-container'>
+              {products?.map((item, index) => (
                 <ProductItem key={index} data={item} />
               ))}
-            </Row>
           </div>
-        </div>
+              
+       </div>
+
+           
       </div>
     </div>
   );
