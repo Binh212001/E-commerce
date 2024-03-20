@@ -1,12 +1,7 @@
-import React from 'react';
-import WrapperCategory from '../wrapper/WrapperCategory';
+import React from "react";
 
 function Quan() {
-  return (
-    <WrapperCategory>
-      <div>Quan</div>
-    </WrapperCategory>
-  );
+  return <div>Quan</div>;
 }
 
 export default Quan;

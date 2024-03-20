@@ -1,13 +1,16 @@
 import routeConfig from "../config/router";
-import Dashboard from "../pages/home/components/Dashboard";
+import Auth from "../pages/auth/Auth";
 import Cart from "../pages/cart/components/Cart";
-import Admin from "../pages/admin/components/Admin";
 import Ao from "../pages/category/ao/Ao";
 import Quan from "../pages/category/quan/Quan";
+import Shose from "../pages/category/shose/Shose.jsx";
 import Vay from "../pages/category/vay/Vay";
+import Dashboard from "../pages/home/components/Dashboard";
+import Bill from "../pages/manage/Bill.jsx";
+import Home from "../pages/manage/Home";
+import Product from "../pages/manage/Product";
 import ProductDetail from "../pages/product/components/ProductDetail";
 import Search from "../pages/search/Search";
-import Auth from "../pages/auth/Auth";
 
 const routes = [
   {
@@ -31,6 +34,11 @@ const routes = [
     layout: "layout",
   },
   {
+    path: routeConfig.shose,
+    element: <Shose />,
+    layout: "layout",
+  },
+  {
     path: routeConfig.quan,
     element: <Quan />,
     layout: "layout",
@@ -42,11 +50,6 @@ const routes = [
     layout: "layout",
   },
   {
-    path: routeConfig.admin,
-    element: <Admin />,
-    layout: "admin",
-  },
-  {
     path: routeConfig.search,
     element: <Search />,
     layout: "layout",
@@ -55,6 +58,21 @@ const routes = [
     path: routeConfig.auth,
     element: <Auth />,
     layout: "layout",
+  },
+  {
+    path: routeConfig.managementHome,
+    element: <Home />,
+    layout: "management",
+  },
+  {
+    path: routeConfig.managementProduct,
+    element: <Product />,
+    layout: "management",
+  },
+  {
+    path: routeConfig.managementBill,
+    element: <Bill />,
+    layout: "management",
   },
 ];
 

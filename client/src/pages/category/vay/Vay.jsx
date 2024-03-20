@@ -1,12 +1,7 @@
-import React from 'react';
-import WrapperCategory from '../wrapper/WrapperCategory';
+import React from "react";
 
 function Vay() {
-  return (
-    <WrapperCategory>
-      <div>Vay </div>
-    </WrapperCategory>
-  );
+  return <div>Vay </div>;
 }
 
 export default Vay;

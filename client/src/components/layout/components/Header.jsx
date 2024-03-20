@@ -6,16 +6,12 @@ import logo from "../../../assets/img/logo.webp";
 import CustomLink from "../../Link/CustomLink";
 import { listMenu } from "./MenuList";
 import useDebounce from "./useDebounce";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../redux/authSlice";
 
 function Header() {
   const [keySearch, setKeySearch] = useState("");
-  const { isLogin } = useSelector((state) => state.user);
   const debounceInput = useDebounce(keySearch, 500);
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
+  const user = localStorage.getItem("user");
 
   const handleSearch = (e) => {
     setKeySearch(e.target.value);
@@ -25,7 +21,7 @@ function Header() {
     navigate("/product/search/" + keySearch);
   };
   const handelLogout = () => {
-    dispatch(logout());
+    localStorage.removeItem("user");
     navigate("/auth");
   };
 
@@ -42,6 +38,10 @@ function Header() {
               Dang Xuat
             </span>
           ),
+          key: "0",
+        },
+        {
+          label: <Link to="/management/home">Quản lý</Link>,
           key: "0",
         },
       ]}
@@ -78,7 +78,7 @@ function Header() {
         </div>
 
         <div className="flex justify-center  font-bold  gap-6">
-          {Boolean(isLogin) ? (
+          {user ? (
             <Dropdown overlay={menu} placement="bottom">
               <span>
                 <Avatar size={"small"} />
@@ -93,7 +93,7 @@ function Header() {
               />
             </Link>
           )}
-          <Link to={Boolean(isLogin) ? "/cart" : "/auth"}>
+          <Link to={user ? "/cart" : "/auth"}>
             <ShoppingCartOutlined
               style={{
                 frontSize: "20px",

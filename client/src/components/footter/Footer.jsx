@@ -8,7 +8,7 @@ function Footer() {
   const help = ["Hướng dẫn chọn size ", "Chính sách khách hàng thân thiết", "Chính sách đổi trả", "Chính sách bảo mật", "Thanh toán giao nhận"];
 
   return (
-    <div className="text-white bg-footer-yody p-[50px]">
+    <div className="text-white bg-footer-yody p-[50px] ">
       <div>
         <div className="text-center m-[30px]">
           <img src={logo} alt="" className="bg-footer-yody" />

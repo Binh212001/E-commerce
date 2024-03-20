@@ -15,6 +15,11 @@ const productRest = {
     const url = `${path}/search`;
     return baseApi.get(url, { params });
   },
+  create: (data) => {
+    const url = `${path}/create`;
+
+    return baseApi.post(url, { params: data });
+  },
 };
 
 export default productRest;

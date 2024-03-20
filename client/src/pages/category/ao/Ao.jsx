@@ -1,12 +1,7 @@
-import React from 'react';
-import WrapperCategory from '../wrapper/WrapperCategory';
+import React from "react";
 
 function Ao() {
-  return (
-    <WrapperCategory>
-      <div>Ao</div>
-    </WrapperCategory>
-  );
+  return <div>Ao</div>;
 }
 
 export default Ao;

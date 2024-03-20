@@ -1,21 +1,20 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { login } from "../../redux/authAction";
+import authRest from "../../api/AuthRest";
 function Auth() {
   const navigate = useNavigate();
-  const dispath = useDispatch();
-  const { isLogin } = useSelector((state) => state.user);
+  // const { isLogin } = useSelector((state) => state.user);
 
   const onFinish = async (values) => {
-    dispath(login(values));
-    if (Boolean(isLogin)) {
+    try {
+      const user = await authRest.login(values);
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
-    } else {
-      toast("Thông tin tài khoản hoạc mật khẩu không chính xác.");
+    } catch (error) {
+      toast(error?.response?.data?.message);
     }
   };
 

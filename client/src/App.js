@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AdminLayout from './components/adminLayout/AdminLayout';
-import Layout from './components/layout/Layout';
-import routes from './router/routes';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ManagerLayout from "./components/ManagerLayout/ManagerLayout";
+import Layout from "./components/layout/Layout";
+import routes from "./router/routes";
 
 function App() {
   return (
@@ -9,16 +9,10 @@ function App() {
       <Routes>
         {routes.map((route, index) => {
           let CurrentLayout = Layout;
-          if (route.layout === 'admin') {
-            CurrentLayout = AdminLayout;
+          if (route.layout === "management") {
+            CurrentLayout = ManagerLayout;
           }
-          return (
-            <Route
-              key={index}
-              path={route.path}
-              element={<CurrentLayout>{route.element}</CurrentLayout>}
-            />
-          );
+          return <Route key={index} path={route.path} element={<CurrentLayout>{route.element}</CurrentLayout>} />;
         })}
       </Routes>
     </Router>
