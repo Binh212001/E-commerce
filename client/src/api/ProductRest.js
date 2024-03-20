@@ -18,7 +18,7 @@ const productRest = {
   create: (data) => {
     const url = `${path}/create`;
 
-    return baseApi.post(url, { params: data });
+    return baseApi.post(url,data) ;
   },
 };
 

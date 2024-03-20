@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import productRest from "../../api/ProductRest";
 import { ToastContainer, toast } from "react-toastify";
+import uploadFile from "../../api/UploadFile";
 
 function ProductForm({ mode, productId }) {
+  const [user, setUser] = useState();
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
   const {
     register,
     handleSubmit,
@@ -11,10 +16,20 @@ function ProductForm({ mode, productId }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
+
+   const id = Math.floor(Math.random()*10000)
     try {
-      await productRest.create(data);
-      toast("Hihi");
+      const fileExtension = data?.image[0].name.split('.').pop().toLowerCase();
+      if (!['jpg', 'png', 'jpeg',"gif","webp","tiff"].includes(fileExtension)) {
+        toast("Định dạng file phải  là png, jpg, jpeg, gif, webp, tiff");
+      } else {
+       await productRest.create({...data, id , sellerId:user.data.userId});
+      const formData = new FormData();
+      formData.append('file', data.image[0]);
+      formData.append('productId', id)
+      await uploadFile.uploadProduct(formData)
+      }
+
     } catch (error) {
       console.log("🚀 ~ onSubmit ~ error:", error);
     }
