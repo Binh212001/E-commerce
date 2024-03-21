@@ -1,17 +1,16 @@
 import { LoginOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/img/logo.webp";
 import CustomLink from "../../Link/CustomLink";
 import { listMenu } from "./MenuList";
 import useDebounce from "./useDebounce";
-import { useDispatch, useSelector } from "react-redux";
 
 function Header() {
   const [keySearch, setKeySearch] = useState("");
   const debounceInput = useDebounce(keySearch, 500);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const handleSearch = (e) => {

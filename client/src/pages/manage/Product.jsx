@@ -1,33 +1,25 @@
-import { Button, Table } from "antd";
-import React, { useState } from "react";
-import ProductForm from "./ProductForm";
-import { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Button } from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { BASEURL } from "../../api/BaseApi";
+import TableCustom from "../../custom/TableCustom";
 import { getProductByUserId } from "../../redux/productAction";
-import { useParams } from "react-router-dom";
+import ProductForm from "./ProductForm";
 
 function Product() {
   const [showForm, setShowForm] = useState(false);
-  const [user, setUser] = useState();
-  const { userId } = useParams();
-  console.log("🚀 ~ Product ~ user:", user);
-
+  const { user } = useSelector((state) => state.auth);
   const [pagination, setPagination] = useState({ page: 0, limit: 10 });
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
-
-  useEffect(() => {
-    dispatch(getProductByUserId({ ...pagination, userId }));
-  }, [dispatch, pagination]);
+    dispatch(getProductByUserId({ ...pagination, userId: user.data.userId }));
+  }, [dispatch, pagination, user.data.userId]);
 
   const { products } = useSelector((state) => state.product);
-  console.log("🚀 ~ Product ~ products:", products);
   const handleShowForm = () => {
     setShowForm(!showForm);
   };
@@ -55,42 +47,39 @@ function Product() {
           <Button onClick={() => handleShowForm()}>Thêm sản phẩm</Button>
         </div>
       )}
-      <Table dataSource={dataSource} columns={columns} pagination={false} className="mb-7 " />
+      <TableCustom col={col}>
+        {products.map((p) => {
+          return (
+            <tr key={p.pid}>
+              <td className="text-center">
+                <input type="checkbox" value={p.pid} />
+              </td>
+              <td className="text-center">{p.pid}</td>
+              <td className="text-center">{p.title}</td>
+              <td className="text-center">{p.price}</td>
+              <td className="text-center">{p.description}</td>
+              <td className="text-center">
+                <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
+              </td>
+              <td className="text-center">
+                {p.size.map((c) => {
+                  return <span className="mr-2 bg-btn-filter p-2 rounded-md">{c.name}</span>;
+                })}
+              </td>
+              <td className="text-center">
+                {p.color.map((c) => {
+                  return <span className="mr-2 bg-btn-filter p-2 rounded-md">{c.name}</span>;
+                })}
+              </td>
+              <td className="text-center">{p.active ? "Đang bán" : "Ngừng bán"}</td>
+            </tr>
+          );
+        })}
+      </TableCustom>
     </div>
   );
 }
 
 export default Product;
 
-const dataSource = [
-  {
-    key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street",
-  },
-  {
-    key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street",
-  },
-];
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-];
+const col = ["MSV", "Tên sản phẩm", "Giá", "Mô tả", "Ảnh", "Kích cỡ", "Màu sắc", "Đang bán"];
