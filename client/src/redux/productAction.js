@@ -27,3 +27,13 @@ export const getProductByName = createAsyncThunk("getProductByName/productSlice"
     console.log("🚀 ~ getProduct ~ error:", error);
   }
 });
+
+export const getProductByUserId = createAsyncThunk("getProductByUserId/productSlice", async (params) => {
+  console.log("🚀 ~ getProductByUserId ~ params:", params);
+  try {
+    const res = await productRest.getProductByUserId(params);
+    return res;
+  } catch (error) {
+    console.log("🚀 ~ getProduct ~ error:", error);
+  }
+});

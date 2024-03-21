@@ -4,14 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authRest from "../../api/AuthRest";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/AuthSlice";
 function Auth() {
   const navigate = useNavigate();
   // const { isLogin } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
       const user = await authRest.login(values);
+      console.log("🚀 ~ onFinish ~ user:", user);
       localStorage.setItem("user", JSON.stringify(user));
+      dispatch(login(user.data));
       navigate("/");
     } catch (error) {
       toast(error?.response?.data?.message);

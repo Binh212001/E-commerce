@@ -15,10 +15,14 @@ const productRest = {
     const url = `${path}/search`;
     return baseApi.get(url, { params });
   },
+  getProductByUserId: (params) => {
+    const url = `${path}/manage/products`;
+    return baseApi.get(url, { params });
+  },
   create: (data) => {
     const url = `${path}/create`;
 
-    return baseApi.post(url,data) ;
+    return baseApi.post(url, data);
   },
 };
 

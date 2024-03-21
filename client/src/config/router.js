@@ -8,9 +8,9 @@ const routeConfig = {
   shose: "/category/giay-dep",
   search: "product/search/:name",
   auth: "/auth",
-  managementHome: "/management/home",
-  managementProduct: "/management/product",
-  managementBill: "/management/bill",
+  managementHome: "/management/home/:userId",
+  managementProduct: "/management/product/:userId",
+  managementBill: "/management/bill/:userId",
 };
 
 export default routeConfig;

@@ -4,7 +4,7 @@ import productRest from "../../api/ProductRest";
 import { ToastContainer, toast } from "react-toastify";
 import uploadFile from "../../api/UploadFile";
 
-function ProductForm({ mode, productId }) {
+function ProductForm({ mode, product, closeForm }) {
   const [user, setUser] = useState();
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
@@ -12,26 +12,32 @@ function ProductForm({ mode, productId }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (product) {
+      //update
+    } else {
+      const id = Math.floor(Math.random() * 10000);
+      try {
+        const fileExtension = data?.image[0].name.split(".").pop().toLowerCase();
+        if (!["jpg", "png", "jpeg", "gif", "webp", "tiff"].includes(fileExtension)) {
+          toast("Định dạng file phải  là png, jpg, jpeg, gif, webp, tiff");
+        } else {
+          await productRest.create({ ...data, id, sellerId: user.data.userId });
+          const formData = new FormData();
+          formData.append("file", data.image[0]);
+          formData.append("productId", id);
+          await uploadFile.uploadProduct(formData);
+          reset();
 
-   const id = Math.floor(Math.random()*10000)
-    try {
-      const fileExtension = data?.image[0].name.split('.').pop().toLowerCase();
-      if (!['jpg', 'png', 'jpeg',"gif","webp","tiff"].includes(fileExtension)) {
-        toast("Định dạng file phải  là png, jpg, jpeg, gif, webp, tiff");
-      } else {
-       await productRest.create({...data, id , sellerId:user.data.userId});
-      const formData = new FormData();
-      formData.append('file', data.image[0]);
-      formData.append('productId', id)
-      await uploadFile.uploadProduct(formData)
+          closeForm();
+        }
+      } catch (error) {
+        console.log("🚀 ~ onSubmit ~ error:", error);
       }
-
-    } catch (error) {
-      console.log("🚀 ~ onSubmit ~ error:", error);
     }
   };
   return (

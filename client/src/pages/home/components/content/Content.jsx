@@ -27,7 +27,7 @@ function Content() {
           </div>
           <div style={{ width: "80%" }} className="grid-container">
             {products?.map((item, index) => (
-              <ProductItem key={index} data={item} />
+              <ProductItem key={item.pid} data={item} />
             ))}
           </div>
         </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
-
+export const BASEURL = "http://localhost:8080/";
 const baseApi = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: BASEURL,
   timeout: "300",
   headers: {
     "Content-Type": "application/json",
@@ -10,7 +10,7 @@ const baseApi = axios.create({
 
 baseApi.interceptors.response.use(
   (res) => {
-    return res.data
+    return res.data;
   },
   (err) => {
     return Promise.reject(err);

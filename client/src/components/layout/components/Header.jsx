@@ -1,18 +1,19 @@
 import { LoginOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/img/logo.webp";
 import CustomLink from "../../Link/CustomLink";
 import { listMenu } from "./MenuList";
 import useDebounce from "./useDebounce";
+import { useDispatch, useSelector } from "react-redux";
 
 function Header() {
   const [keySearch, setKeySearch] = useState("");
   const debounceInput = useDebounce(keySearch, 500);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
-
+  const { user } = useSelector((state) => state.auth);
   const handleSearch = (e) => {
     setKeySearch(e.target.value);
   };
@@ -41,8 +42,8 @@ function Header() {
           key: "0",
         },
         {
-          label: <Link to="/management/home">Quản lý</Link>,
-          key: "0",
+          label: <Link to={`/management/home/${user?.data?.userId}`}>Quản lý</Link>,
+          key: "1",
         },
       ]}
     />

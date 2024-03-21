@@ -1,12 +1,13 @@
 import { Button, Col, Divider, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import baseApi from "../../../api/BaseApi";
+import baseApi, { BASEURL } from "../../../api/BaseApi";
 
 function ProductDetail() {
   const { id } = useParams();
   const [qty, setQty] = useState(1);
   const [product, setProduct] = useState({});
+  console.log(`E:/temp/${product.image}`);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,7 +34,7 @@ function ProductDetail() {
       <div>
         <Row>
           <Col className="flex justify-center" xs={24} sm={12} md={12}>
-            <img src="https://bizweb.dktcdn.net/100/438/408/products/sam7043-den-qsm5057-xnh-10.jpg?v=1709778203083" alt="anh" className="h-[300px] w-auto" />
+            <img src={`${BASEURL}images/${product.image}`} alt="anh" className="h-[300px] w-auto" />
           </Col>
           <Col xs={24} sm={12} md={12}>
             <Typography>{product.title}</Typography>

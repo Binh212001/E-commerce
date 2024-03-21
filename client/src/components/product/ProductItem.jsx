@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { BASEURL } from "../../api/BaseApi";
 
 function ProductItem({ data }) {
   const handleAddToCart = (data) => {};
@@ -9,11 +10,7 @@ function ProductItem({ data }) {
       <Link to={`/product/${data.pid}`}>
         <div className="flex rounded-[2px] flex-col w-full h-full card">
           <div className="object-cover">
-            <img
-              src="https://bizweb.dktcdn.net/100/438/408/products/sam7043-den-qsm5057-xnh-10.jpg?v=1709778203083"
-              alt={data.title}
-              className="block w-full h-auto"
-            />
+            <img src={`${BASEURL}images/${data.image}`} alt={data.title} className="block w-full h-auto" />
           </div>
           <div className="flex-1">
             <h3 className="font-bold p-2">{data.title}</h3>
