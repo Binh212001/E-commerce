@@ -74,3 +74,10 @@ padding-right: 100px;
   grid-template-columns: repeat(4, 1fr); /* Creates 4 equal-width columns */
   gap: 10px; /* Adds gap between grid items */
 }
+
+.dot{
+  width: 200px; /* Định width của container */
+  white-space: nowrap; /* Ngăn text xuống dòng */
+  overflow: hidden; /* Ẩn bất kỳ text nào vượt quá kích thước của container */
+  text-overflow: ellipsis; /* Thêm dấu chấm ba (...) cho text bị ẩn */
+}

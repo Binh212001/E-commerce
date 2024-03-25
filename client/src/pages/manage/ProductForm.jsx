@@ -105,10 +105,10 @@ function ProductForm({ mode, product, closeForm }) {
             Category
           </label>
           <select className="shadow-md" select="1" {...register("category")} id="category">
-            <option value="1">Quần</option>
-            <option value="2">Áo</option>
-            <option value="3">Váy</option>
-            <option value="4">Giày dép</option>
+            <option value="quan">Quần</option>
+            <option value="ao">Áo</option>
+            <option value="vay">Váy</option>
+            <option value="giaydep">Giày dép</option>
           </select>
         </div>
         <div>
