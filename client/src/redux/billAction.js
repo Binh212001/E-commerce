@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import billRest from "../api/BillRest";
 
-export const getBillByUserId = createAsyncThunk("getBill/billSlice", async (params) => {
+export const getBillByUserId = createAsyncThunk("getBillByUserId/billSlice", async (params) => {
   try {
     const res = await billRest.getBillByUserId(params);
     return res;
@@ -9,3 +9,13 @@ export const getBillByUserId = createAsyncThunk("getBill/billSlice", async (para
     console.log("🚀 ~ getProduct ~ error:", error);
   }
 });
+
+export const getBills = createAsyncThunk("getBill/billSlice", async (params) => {
+  try {
+    const res = await billRest.getBills(params);
+    return res;
+  } catch (error) {
+    console.log("🚀 ~ getProduct ~ error:", error);
+  }
+});
+

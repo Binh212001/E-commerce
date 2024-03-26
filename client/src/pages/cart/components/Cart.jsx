@@ -9,7 +9,7 @@ function Cart() {
     dispatch(getBillByUserId({
       userId: user.data.userId
     }))
-  },[user])
+  },[user,dispatch])
   const {bills} = useSelector(state=>state.bill)
   return (
     <div className="flex justify-center">

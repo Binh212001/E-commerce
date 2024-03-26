@@ -10,6 +10,15 @@ export const getProduct = createAsyncThunk("getProduct/productSlice", async (par
   }
 });
 
+export const getProductByCategory = createAsyncThunk("getProductByCategory/productSlice", async (params) => {
+  try {
+    const res = await productRest.getProductByCategory(params);
+    return res;
+  } catch (error) {
+    console.log("🚀 ~ getProduct ~ error:", error);
+  }
+});
+
 export const getProductById = async (id) => {
   try {
     const res = await productRest.getProductById(id);

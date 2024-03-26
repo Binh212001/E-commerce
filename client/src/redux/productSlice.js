@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProduct, getProductByName, getProductByUserId } from "./productAction";
+import { getProduct, getProductByCategory, getProductByName, getProductByUserId } from "./productAction";
 
 const initialState = {
   count: 0,
@@ -25,6 +25,20 @@ const productSlice = createSlice({
         state.message = payload?.message;
       })
       .addCase(getProduct.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload?.message;
+      })
+      .addCase(getProductByCategory.pending, (state) => {
+        state.loading = true;
+        state.message = "PENDING";
+      })
+      .addCase(getProductByCategory.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.count = payload.count;
+        state.products = payload.data;
+        state.message = payload?.message;
+      })
+      .addCase(getProductByCategory.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload?.message;
       })

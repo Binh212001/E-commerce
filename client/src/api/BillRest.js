@@ -12,6 +12,10 @@ const billRest = {
     const url = `${path}/user`;
     return baseApi.get(url, { params });
   },
+  getBills: (params) => {
+    const url = `${path}/getAll`;
+    return baseApi.get(url, { params });
+  },
 };
 
 
