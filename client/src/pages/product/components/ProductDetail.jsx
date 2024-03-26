@@ -1,13 +1,22 @@
 import { Button, Col, Divider, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import baseApi, { BASEURL } from "../../../api/BaseApi";
+import billRest from "../../../api/BillRest";
+import { ToastContainer, toast } from "react-toastify";
 
 function ProductDetail() {
   const { id } = useParams();
   const [qty, setQty] = useState(1);
+  const [color, setColor] = useState("red");
+  const [selectColor, setSelectColor] = useState(0);
+  const [size, setSize] = useState("SM");
+  const [selectSize, setSelectSize] = useState(0);
   const [product, setProduct] = useState({});
-  console.log(`E:/temp/${product.image}`);
+  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth);
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -29,8 +38,37 @@ function ProductDetail() {
     }
   };
 
+  const handleSelectSize= (index , name)=>{
+    setSelectSize(index)
+    setSize(name)
+  }
+  const handleSelectColor = (index , name)=>{
+    setSelectColor(index)
+    setColor(name)
+  }
+  console.log(user)
+  const buyProduct = async()=>{
+    if(!user.data.phone||!user.data.addressDetail|| !user.data.province ){
+      navigate("/")
+    }
+    try {
+      await billRest.create({
+        product,
+        quantity: qty,
+        account: user.data,
+        color,
+        size
+      })
+      toast("Mua hàng thành công");
+    } catch (error) {
+       toast("Error server")      
+    }
+  }
+
+
   return (
     <div className="mx-7 my-auto p-4">
+      <ToastContainer/>
       <div>
         <Row>
           <Col className="flex justify-center" xs={24} sm={12} md={12}>
@@ -43,13 +81,31 @@ function ProductDetail() {
               {product?.color?.map((color, index) => (
                 <li
                   key={index}
-                  onClick={() => {}}
-                  className={`w-[30px] h-[30px]`}
+                  onClick={() => {handleSelectColor(index, color.name)}}
+                  className={`w-[30px] h-[30px] ` }
                   style={{
-                    backgroundColor: color,
+                    backgroundColor: color.name,
                     borderRadius: "50%",
+                    border:  `${index === selectColor ? "3px solid #333": "none"}`
                   }}
-                />
+                >
+                </li>
+              ))}
+            </div>
+            <div className="flex gap-5">
+              {product?.size?.map((s, index) => (
+                <li
+                  key={index}
+                  onClick={() => {handleSelectSize(index, s.name)}}
+                  className={`w-[30px] h-[30px] ` }
+                  style={{
+                    backgroundColor: s.name,
+                    border:  `${index ===  selectSize ? "1px solid #333": "none"}`
+                  }}
+                >
+                  {s.name}
+                  
+                </li>
               ))}
             </div>
             <Typography>Gia : {product.price} vnd</Typography>
@@ -65,7 +121,7 @@ function ProductDetail() {
             </div>
             <div>
               <div className="mb-2">Total: {qty * product.price}vnd</div>
-              <Button>Them va gio hang</Button>
+              <Button onClick={()=>buyProduct()}>Mua hàng</Button>
             </div>
           </Col>
         </Row>

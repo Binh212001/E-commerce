@@ -1,36 +1,43 @@
-import React from 'react';
-import CartItem from './CartItem';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBillByUserId } from '../../../redux/billAction';
 function Cart() {
 
-  const cartItem = [1,2,1,1,1,1,1,1,1,1,1];
- 
+  const dispatch = useDispatch()
+  const {user} = useSelector(state=>state.auth)
+  useEffect(()=>{
+    dispatch(getBillByUserId({
+      userId: user.data.userId
+    }))
+  },[user])
+  const {bills} = useSelector(state=>state.bill)
   return (
     <div className="flex justify-center">
       <div >
         <div className="container mx-auto p-4 grid grid-cols-4 gap-5">
 
           {
-            cartItem.map(item=> <div className="bg-white shadow-md rounded-md p-6">
-            <h1 className="text-2xl font-bold mb-4 dot">ProductName</h1>
+            bills.map(item=> <div className="bg-white shadow-md rounded-md p-6">
+            <h1 className="text-2xl font-bold mb-4 dot">{item.product.title}</h1>
             <div className="flex justify-between mb-4">
               
                     <p className="font-bold">Số lượng:</p>
-                    <p>100</p>
+                    <p>{item?.quantity}</p>
             </div>
             <div className="flex justify-between mb-4">
               
                     <p className="font-bold">Giá:</p>
-                    <p>100</p>
+                    <p>{item?.product?.price}</p>
             </div>
             <div className="flex justify-between mb-4">
                 <div>
                     <p className="font-bold">Ngày:</p>
-                    <p>March 25, 2024</p>
+                    <p>{item.createdAt}</p>
                 </div>
             </div>
             <div className="flex justify-between mb-4">
                     <p className="font-bold">Tổng:</p>
-                    <p>3000vcm</p>
+                    <p>{item?.product?.price*item?.quantity}</p>
             </div>
         </div>)
           }

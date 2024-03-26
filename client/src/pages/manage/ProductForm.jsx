@@ -101,7 +101,7 @@ function ProductForm({ mode, product, closeForm }) {
         </div>
 
         <div>
-          <label htmlFor="category" className="block text-xl font-medium text-gray-700">
+          <label htmlFor="  " className="block text-xl font-medium text-gray-700">
             Category
           </label>
           <select className="shadow-md" select="1" {...register("category")} id="category">
