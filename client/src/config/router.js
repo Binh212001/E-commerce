@@ -10,6 +10,7 @@ const routeConfig = {
   auth: "/auth",
   managementHome: "/management/home/:userId",
   managementProduct: "/management/product/:userId",
+  managementProductSearch: "/management/product/search/:id",
   managementBill: "/management/bill/:userId",
 };
 

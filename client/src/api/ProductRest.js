@@ -29,6 +29,11 @@ const productRest = {
 
     return baseApi.post(url, data);
   },
+  stopSale: (ids) => {
+    const url = `${path}/stopSale`;
+
+    return baseApi.put(url, ids);
+  },
 };
 
 export default productRest;

@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,14 +6,21 @@ import { BASEURL } from "../../api/BaseApi";
 import TableCustom from "../../custom/TableCustom";
 import { getProductByUserId } from "../../redux/productAction";
 import ProductForm from "./ProductForm";
+import { set } from "react-hook-form";
+import productRest from "../../api/ProductRest";
+import { SearchOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 function Product() {
   const [showForm, setShowForm] = useState(false);
+  const [keyword, setKeyword]= useState("");
+  const [listStopSale, setListStopSale] = useState([])
   const { user } = useSelector((state) => state.auth);
   const [pagination, setPagination] = useState({ page: 0, limit: 10 });
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getProductByUserId({ ...pagination, userId: user.data.userId }));
@@ -24,10 +31,35 @@ function Product() {
     setShowForm(!showForm);
   };
 
+  const handleStopSell=async()=>{
+      if(listStopSale.length ===0){
+        toast("Vui lòng chọn sản phẩm không bán nữa.")
+        return
+      }
+      try {
+        await productRest.stopSale(listStopSale);
+        dispatch(getProductByUserId({ ...pagination, userId: user.data.userId }));
+        toast("Thành công")
+      } catch (error) {
+        toast("Thất bại")
+      }
+  }
+
   const closeForm = () => {
     setShowForm(false);
     toast("Thêm sản phẩm thành công.");
   };
+
+  const searchProduct = ()=>{
+    navigate(`/management/product/search/${keyword}`)
+  }
+
+  const selectProduct = (e)=>{
+    const  data = e.target.value
+    setListStopSale([...listStopSale ,data])
+
+  }
+  console.log(listStopSale)
 
   console.log(user);
   if (!user?.data?.sellers) {
@@ -43,16 +75,24 @@ function Product() {
       {showForm ? (
         <ProductForm mode={mode} closeForm={closeForm} />
       ) : (
-        <div className="my-4">
-          <Button onClick={() => handleShowForm()}>Thêm sản phẩm</Button>
+        <div className="my-4 flex justify-between items-center">
+          <div>
+          <Button className="mr-4" onClick={() => handleShowForm()}>Thêm sản phẩm</Button>
+          <Button onClick={() => handleStopSell()}>Ngừng bán</Button>
+          </div>
+          <div className="flex gap-2">
+            <Input onChange={(e)=>setKeyword(e.target.value)}/>
+            <Button className="items-center" onClick={()=>searchProduct()}><SearchOutlined/></Button>
+          </div>
         </div>
       )}
+   
       <TableCustom col={col}>
         {products.map((p) => {
           return (
             <tr key={p.pid}>
               <td className="text-center">
-                <input type="checkbox" value={p.pid} />
+                <input type="checkbox" value={p.pid} name="pid"   onChange={(e)=>{selectProduct(e)}} />
               </td>
               <td className="text-center">{p.pid}</td>
               <td className="text-center">{p.title}</td>
