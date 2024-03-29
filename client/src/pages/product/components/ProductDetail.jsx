@@ -14,14 +14,17 @@ function ProductDetail() {
   const [size, setSize] = useState("SM");
   const [selectSize, setSelectSize] = useState(0);
   const [product, setProduct] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const p = await baseApi.get("http://localhost:8080/product/" + id);
+        const p = await baseApi.get(`http://localhost:8080/product/getById`, {
+          params: {
+            id,
+          },
+        });
         setProduct(p.data);
       } catch (err) {
         console.log("🚀 ~ fetchProduct ~ err:", err);
@@ -38,18 +41,18 @@ function ProductDetail() {
     }
   };
 
-  const handleSelectSize= (index , name)=>{
-    setSelectSize(index)
-    setSize(name)
-  }
-  const handleSelectColor = (index , name)=>{
-    setSelectColor(index)
-    setColor(name)
-  }
-  console.log(user)
-  const buyProduct = async()=>{
-    if(!user.data.phone||!user.data.addressDetail|| !user.data.province ){
-      navigate("/")
+  const handleSelectSize = (index, name) => {
+    setSelectSize(index);
+    setSize(name);
+  };
+  const handleSelectColor = (index, name) => {
+    setSelectColor(index);
+    setColor(name);
+  };
+  console.log(user);
+  const buyProduct = async () => {
+    if (!user.data.phone || !user.data.addressDetail || !user.data.province) {
+      navigate("/");
     }
     try {
       await billRest.create({
@@ -57,22 +60,25 @@ function ProductDetail() {
         quantity: qty,
         account: user.data,
         color,
-        size
-      })
+        size,
+      });
       toast("Mua hàng thành công");
     } catch (error) {
-       toast("Error server")      
+      toast("Error server");
     }
-  }
-
+  };
 
   return (
     <div className="mx-7 my-auto p-4">
-      <ToastContainer/>
+      <ToastContainer />
       <div>
         <Row>
           <Col className="flex justify-center" xs={24} sm={12} md={12}>
-            <img src={`${BASEURL}images/${product.image}`} alt="anh" className="h-[300px] w-auto" />
+            <img
+              src={`${BASEURL}images/${product.image}`}
+              alt="anh"
+              className="h-[300px] w-auto"
+            />
           </Col>
           <Col xs={24} sm={12} md={12}>
             <Typography>{product.title}</Typography>
@@ -81,47 +87,59 @@ function ProductDetail() {
               {product?.color?.map((color, index) => (
                 <li
                   key={index}
-                  onClick={() => {handleSelectColor(index, color.name)}}
-                  className={`w-[30px] h-[30px] ` }
+                  onClick={() => {
+                    handleSelectColor(index, color.name);
+                  }}
+                  className={`w-[30px] h-[30px] `}
                   style={{
                     backgroundColor: color.name,
                     borderRadius: "50%",
-                    border:  `${index === selectColor ? "3px solid #333": "none"}`
+                    border: `${
+                      index === selectColor ? "3px solid #333" : "none"
+                    }`,
                   }}
-                >
-                </li>
+                ></li>
               ))}
             </div>
             <div className="flex gap-5">
               {product?.size?.map((s, index) => (
                 <li
                   key={index}
-                  onClick={() => {handleSelectSize(index, s.name)}}
-                  className={`w-[30px] h-[30px] ` }
+                  onClick={() => {
+                    handleSelectSize(index, s.name);
+                  }}
+                  className={`w-[30px] h-[30px] `}
                   style={{
                     backgroundColor: s.name,
-                    border:  `${index ===  selectSize ? "1px solid #333": "none"}`
+                    border: `${
+                      index === selectSize ? "1px solid #333" : "none"
+                    }`,
                   }}
                 >
                   {s.name}
-                  
                 </li>
               ))}
             </div>
             <Typography>Gia : {product.price} vnd</Typography>
             <div className="btn_group mb-3">
               <br />
-              <span className="bg-btn-filter px-3 py-2 rounded-md" onClick={() => handleQty("-")}>
+              <span
+                className="bg-btn-filter px-3 py-2 rounded-md"
+                onClick={() => handleQty("-")}
+              >
                 -
               </span>
               <span className="mx-3">{qty}</span>
-              <span className="bg-btn-filter px-3 py-2 rounded-md" onClick={() => handleQty("+")}>
+              <span
+                className="bg-btn-filter px-3 py-2 rounded-md"
+                onClick={() => handleQty("+")}
+              >
                 +
               </span>
             </div>
             <div>
               <div className="mb-2">Total: {qty * product.price}vnd</div>
-              <Button onClick={()=>buyProduct()}>Mua hàng</Button>
+              <Button onClick={() => buyProduct()}>Mua hàng</Button>
             </div>
           </Col>
         </Row>

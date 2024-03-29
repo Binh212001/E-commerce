@@ -21,7 +21,7 @@ const productRest = {
     return baseApi.get(url, { params });
   },
   getProductByUserId: (params) => {
-    const url = `${path}/manage/products`;
+    const url = `${path}`;
     return baseApi.get(url, { params });
   },
   create: (data) => {
