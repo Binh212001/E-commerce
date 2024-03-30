@@ -1,26 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LineChart from "./LineChart ";
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First Dataset',
-      data: [65, 59, 80, 81, 56, 55, 40],
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
-    },
-  ],
-};
+import productRest from "../../api/ProductRest";
 
-const options = {
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
+
 
 function Home() {
+  const  [label , setLaBel] = useState([])
+  const [dataChart , setDataChart] = useState([])
+
+
+  useEffect(()=>{
+  const getTopSelleing = async ()=>{
+    try {
+      const  {data} =  await productRest.topSalling()
+      data.map((c)=>{
+
+        setLaBel(prev=>[...prev , c.productName])
+        setDataChart(prev=>[...prev , c.totalQuantitySold])
+      })
+     
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+  getTopSelleing()
+  },[])
+  const data = {
+    labels: label,
+    datasets: [
+      {
+        label: '10 sản phẩm bán nhiều nhất. ',
+        data:dataChart,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
   
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user?.data?.sellers) {
@@ -30,7 +45,7 @@ function Home() {
       </div>
     );
   }
-  return <div className="container m-auto"><LineChart data={data} options={options} /></div>;
+  return <div className="container m-auto"><LineChart data={data}  /></div>;
 }
 
 export default Home;

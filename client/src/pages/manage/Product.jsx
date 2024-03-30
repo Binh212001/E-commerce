@@ -118,9 +118,9 @@ function Product() {
                 <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
               </td>
               <td className="text-center">
-                {p.size.map((c) => {
+                {p.size.map((c , index) => {
                   return (
-                    <span className="mr-2 bg-btn-filter p-2 rounded-md">
+                    <span  key={index} className="mr-2 bg-btn-filter p-2 rounded-md">
                       {c.name}
                     </span>
                   );
