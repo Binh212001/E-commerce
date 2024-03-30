@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import TableCustom from "../../custom/TableCustom";
 import { getBills } from "../../redux/billAction";
-import { useDispatch, useSelector } from "react-redux";
+import { Pagination } from "antd";
 
 function Bill() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const [pagination, setPagination] = useState({ page: 0, limit: 10 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit =12;
+  const {bills,count} = useSelector(state=>state.bill)
+  
   const dispatch = useDispatch()
   
   useEffect(() => {
-    dispatch(getBills(pagination));
-  }, [dispatch, pagination ]);
+    dispatch(getBills({limit , page : currentPage-1}));
+  }, [dispatch, currentPage ]);
 
-  const {bills} = useSelector(state=>state.bill)
-  
+  const changePage = (p) => {
+    setCurrentPage(p);
+  };
+
   if (!user?.data?.sellers) {
     return (
       <div className="text-center align-middle flex flex-col justify-center" style={{ height: "60vh" }}>
@@ -50,6 +55,10 @@ function Bill() {
           );
         })}
       </TableCustom>
+      <div  className="text-center mt-4">
+
+<Pagination total={count} pageSize={limit}current={currentPage} onChange={(currentPage) => changePage(currentPage)} />
+</div>
     </div>
   );
 }

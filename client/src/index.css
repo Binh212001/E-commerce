@@ -80,3 +80,10 @@ padding-right: 100px;
   overflow: hidden; /* Ẩn bất kỳ text nào vượt quá kích thước của container */
   text-overflow: ellipsis; /* Thêm dấu chấm ba (...) cho text bị ẩn */
 }
+
+.sticky-bottom{
+  position:sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

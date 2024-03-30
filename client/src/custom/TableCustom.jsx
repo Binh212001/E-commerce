@@ -1,7 +1,6 @@
 import React from "react";
 
 function TableCustom({ col, children }) {
-  console.log("🚀 ~ TableCustom ~ col:", col);
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full">

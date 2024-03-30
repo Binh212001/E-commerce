@@ -1,15 +1,14 @@
-import { Button, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { BASEURL } from "../../api/BaseApi";
+import productRest from "../../api/ProductRest";
 import TableCustom from "../../custom/TableCustom";
 import { getProductByUserId } from "../../redux/productAction";
 import ProductForm from "./ProductForm";
-import { set } from "react-hook-form";
-import productRest from "../../api/ProductRest";
-import { SearchOutlined } from "@ant-design/icons";
-import { useNavigate, useParams } from "react-router-dom";
 
 function Product() {
   const [showForm, setShowForm] = useState(false);
@@ -17,17 +16,25 @@ function Product() {
   const [listStopSale, setListStopSale] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { userId } = useParams();
-  const [pagination, setPagination] = useState({ page: 0, limit: 10 });
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getProductByUserId({ ...pagination, userId }));
-  }, [dispatch, pagination, userId]);
+  const [current, setCurrent] = useState(1);
+  const limit =12;
+  const { products , count } = useSelector((state) => state.product);
+  
 
-  const { products } = useSelector((state) => state.product);
+  useEffect(() => {
+    dispatch(getProductByUserId({limit,page:current-1, userId }));
+  }, [dispatch, current , userId]);
+
+  const changePage = (currentPage) => {
+    setCurrent(currentPage);
+  };
+
+
   const handleShowForm = () => {
     setShowForm(!showForm);
   };
@@ -39,9 +46,10 @@ function Product() {
     }
     try {
       await productRest.stopSale(listStopSale);
-      dispatch(getProductByUserId({ ...pagination, userId: user.data.userId }));
+      dispatch(getProductByUserId({page:current-1 , limit, userId }));
       toast("Thành công");
     } catch (error) {
+      console.log("🚀 ~ handleStopSell ~ error:", error)
       toast("Thất bại");
     }
   };
@@ -59,9 +67,7 @@ function Product() {
     const data = e.target.value;
     setListStopSale([...listStopSale, data]);
   };
-  console.log(listStopSale);
-
-  console.log(user);
+  
   if (!user?.data?.sellers) {
     return (
       <div
@@ -142,6 +148,10 @@ function Product() {
           );
         })}
       </TableCustom>
+      <div  className="text-center mt-4">
+
+      <Pagination total={count} pageSize={limit}current={current} onChange={(currentPage) => changePage(currentPage)} />
+      </div>
     </div>
   );
 }

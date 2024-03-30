@@ -3,16 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../../../components/product/ProductItem";
 import { getProduct } from "../../../../redux/productAction";
 import Filter from "../../../../components/Filter";
+import { Pagination } from "antd";
 
 function Content() {
-  const [pagination, setPagination] = useState({ page: 0, limit: 10 });
+  const [current, setCurrent] = useState(1);
+  const limit =12;
   const dispatch = useDispatch();
+  const { products  , count} = useSelector((state) => state.product);
+  let totalPage =Math.floor (count / limit);
+  
 
   useEffect(() => {
-    dispatch(getProduct(pagination));
-  }, [dispatch, pagination]);
+    dispatch(getProduct({
+      limit,
+      page:current-1
+    }));
+  }, [dispatch, current]);
 
-  const { products } = useSelector((state) => state.product);
+  const changePage = (currentPage) => {
+    setCurrent(currentPage);
+  };
+
+
 
   return (
     <div className="my-[50px]">
@@ -31,6 +43,10 @@ function Content() {
             ))}
           </div>
         </div>
+      </div>
+      <div  className="text-center mt-4">
+
+      <Pagination total={count} pageSize={limit}current={current} onChange={(currentPage) => changePage(currentPage)} />
       </div>
     </div>
   );

@@ -2,13 +2,13 @@ import { Col, Row } from "antd";
 import React from "react";
 import logo from "../../assets/img/logo_footer.webp";
 
-function Footer() {
-  const about = ["Giới thiệu", "Liên hệ", "Tuyển dụng", "Tin tức", "Hệ thống cửa hàng"];
+function Footer({sticky = false}) {
 
+  const about = ["Giới thiệu", "Liên hệ", "Tuyển dụng", "Tin tức", "Hệ thống cửa hàng"];
   const help = ["Hướng dẫn chọn size ", "Chính sách khách hàng thân thiết", "Chính sách đổi trả", "Chính sách bảo mật", "Thanh toán giao nhận"];
 
   return (
-    <div className="text-white bg-footer-yody p-[50px]  ">
+    <div className={`text-white bg-footer-yody p-[50px] ${sticky ? "sticky-bottom" : ""}  `}>
       <div>
         <div className="text-center m-[30px]">
           <img src={logo} alt="" className="bg-footer-yody" />
