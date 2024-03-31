@@ -1,5 +1,6 @@
 import routeConfig from "../config/router";
 import Auth from "../pages/auth/Auth";
+import UpdateUser from "../pages/auth/UpdateUser.jsx";
 import Cart from "../pages/cart/components/Cart";
 import Ao from "../pages/category/ao/Ao";
 import Quan from "../pages/category/quan/Quan";
@@ -37,6 +38,11 @@ const routes = [
   {
     path: routeConfig.shose,
     element: <Shose />,
+    layout: "layout",
+  },
+  {
+    path: routeConfig.updateUser,
+    element: <UpdateUser />,
     layout: "layout",
   },
   {

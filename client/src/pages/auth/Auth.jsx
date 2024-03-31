@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,18 +7,28 @@ import authRest from "../../api/AuthRest";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/AuthSlice";
 function Auth() {
+  const [register, setRegister ] = useState(false) 
   const navigate = useNavigate();
-  // const { isLogin } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    try {
-      const user = await authRest.login(values);
-      console.log("🚀 ~ onFinish ~ user:", user);
-      localStorage.setItem("user", JSON.stringify(user));
-      dispatch(login(user.data));
-      navigate("/");
-    } catch (error) {
-      toast(error?.response?.data?.message);
+    if(register){
+      try {
+        await authRest.register(values);
+        toast("Đăng kí thành công")
+        setRegister(false)
+      } catch (error) {
+        console.log("🚀 ~ onFinish ~ error:", error)
+      }
+      
+    }else{
+      try {
+        const user = await authRest.login(values);
+        localStorage.setItem("user", JSON.stringify(user));
+        dispatch(login(user.data));
+        navigate("/");
+      } catch (error) {
+        toast(error);
+      }
     }
   };
 
@@ -27,7 +37,7 @@ function Auth() {
   };
 
   return (
-    <div className="wrapper">
+    <div className="wrapper"  style={{height: "50vh"}} >
       <ToastContainer />
       <div className="container">
         <Form
@@ -68,18 +78,73 @@ function Auth() {
             <Input.Password />
           </Form.Item>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
+          {
+            register ? <>
+            
+          <Form.Item
+            label="Nhập lại  mật khẩu"
+            name="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền mật khẩu",
+              },
+            ]}
           >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="Họ"
+            name="firstName"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền họ.",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Tên"
+            name="lastName"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền tên.",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+            </>:<></>
+          }
+
+          <div className=" flex  justify-center ">
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
+              {register ?  
+              <>
+              <Button  htmlType="submit" className="mr-3">
+                Đăng ký
               </Button>
+              <Button type="button" onClick={()=>setRegister(false)} className="mr-3">
+               Hủy
+              </Button>
+              </>:<>   
+              <Button htmlType="submit" className="mr-3">
+                Đăng nhập
+              </Button>
+              </>
+              }
             </Form.Item>
           </div>
+          {register ? 
+        <></>:  
+          <div className=" flex  justify-center ">
+            <p className="inline text-blue-400 cursor-pointer" onClick={()=>setRegister(true)}>Tạo một tài khoản..</p>
+          </div>
+        }
         </Form>
       </div>
     </div>

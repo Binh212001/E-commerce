@@ -41,8 +41,12 @@ function Header() {
           key: "0",
         },
         {
-          label: <Link to={`/management/home/${user?.data?.userId}`}>Quản lý</Link>,
+          label: user.userId ? <Link to={`/user/update/${user.userId}`}>Cập nhật thông tin</Link> : null ,
           key: "1",
+        },
+        {
+          label: user.sellers ? <Link to={`/management/home`}>Quản lý</Link> : null,
+          key: "2",
         },
       ]}
     />
