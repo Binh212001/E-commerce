@@ -15,9 +15,11 @@ const billRest = {
     const url = `${path}/getAll`;
     return baseApi.get(url, { params });
   },
-  export: (ids) => {
+  export: (data) => {
     const url = `${path}/pdf`;
-    return baseApi.post(url, ids);
+    return baseApi.post(url, data,{
+      responseType: 'arraybuffer'
+    });
   },
 };
 

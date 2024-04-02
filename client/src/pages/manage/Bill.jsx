@@ -30,8 +30,17 @@ function Bill() {
   };
 
   const exportBill = async () => {
-    const data = await billRest.export(listBillSelect);
-    setFile(data);
+    try {
+      const response = await billRest.export(listBillSelect);
+      const file = new Blob([response], {type: 'application/pdf'});
+            const fileURL = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = fileURL;
+            link.download = new Date() + ".pdf";
+            link.click();
+    } catch (error) {
+      console.error('Error exporting bill:', error);
+    }
   };
 
   if (!user?.data?.sellers) {
