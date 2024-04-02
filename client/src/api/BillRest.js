@@ -2,7 +2,6 @@ import baseApi from "./BaseApi";
 const path = "/bill";
 
 const billRest = {
-  
   create: (data) => {
     const url = `${path}/create`;
 
@@ -16,7 +15,10 @@ const billRest = {
     const url = `${path}/getAll`;
     return baseApi.get(url, { params });
   },
+  export: (ids) => {
+    const url = `${path}/pdf`;
+    return baseApi.post(url, ids);
+  },
 };
-
 
 export default billRest;
