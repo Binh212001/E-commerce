@@ -7,7 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 import { BASEURL } from "../../api/BaseApi";
 import productRest from "../../api/ProductRest";
 import TableCustom from "../../custom/TableCustom";
-import { getProductByUserId } from "../../redux/productAction";
+import {
+  getProductByTitle,
+  getProductByUserId,
+} from "../../redux/productAction";
 import ProductForm from "./ProductForm";
 
 function Product() {
@@ -23,7 +26,9 @@ function Product() {
 
   const [current, setCurrent] = useState(1);
   const limit = 12;
-  const { products, count } = useSelector((state) => state.product);
+  const { products, count, productSearch } = useSelector(
+    (state) => state.product
+  );
 
   useEffect(() => {
     dispatch(
@@ -62,7 +67,12 @@ function Product() {
   };
 
   const searchProduct = () => {
-    navigate(`/management/product/search/${keyword}`);
+    const params = {
+      page: current - 1,
+      limit,
+      name: keyword.toLowerCase(),
+    };
+    dispatch(getProductByTitle(params));
   };
 
   const selectProduct = (e) => {
@@ -115,60 +125,115 @@ function Product() {
       )}
 
       <TableCustom col={col}>
-        {products.map((p) => {
-          return (
-            <tr key={p.pid}>
-              <td className="text-center">
-                <input
-                  type="checkbox"
-                  value={p.pid}
-                  name="pid"
-                  onChange={(e) => {
-                    selectProduct(e);
-                  }}
-                />
-              </td>
-              <td className="text-center">{p.pid}</td>
-              <td className="text-center">{p.title}</td>
-              <td className="text-center">{p.price}</td>
-              <td className="text-center">{p.description}</td>
-              <td className="text-center">
-                <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
-              </td>
-              <td className="text-center">
-                {p.size.map((c, index) => {
-                  return (
-                    <span
-                      key={index}
-                      className="mr-2 bg-btn-filter p-2 rounded-md"
-                    >
-                      {c.name}
-                    </span>
-                  );
-                })}
-              </td>
-              <td className="text-center">
-                {p.color.map((c) => {
-                  return (
-                    <span className="mr-2 bg-btn-filter p-2 rounded-md">
-                      {c.name}
-                    </span>
-                  );
-                })}
-              </td>
-              <td className="text-center">
-                {p.active ? "Đang bán" : "Ngừng bán"}
-              </td>
-              <td className="text-center">
-                <EditOutlined
-                  onClick={() => {
-                    handleEdit(p);
-                  }}
-                />
-              </td>
-            </tr>
-          );
-        })}
+        {productSearch.length > 0
+          ? productSearch.map((p) => {
+              return (
+                <tr key={p.pid}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      value={p.pid}
+                      name="pid"
+                      onChange={(e) => {
+                        selectProduct(e);
+                      }}
+                    />
+                  </td>
+                  <td className="text-center">{p.pid}</td>
+                  <td className="text-center">{p.title}</td>
+                  <td className="text-center">{p.price}</td>
+                  <td className="text-center">{p.description}</td>
+                  <td className="text-center">
+                    <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
+                  </td>
+                  <td className="text-center">
+                    {p.size.map((c, index) => {
+                      return (
+                        <span
+                          key={index}
+                          className="mr-2 bg-btn-filter p-2 rounded-md"
+                        >
+                          {c.name}
+                        </span>
+                      );
+                    })}
+                  </td>
+                  <td className="text-center">
+                    {p.color.map((c) => {
+                      return (
+                        <span className="mr-2 bg-btn-filter p-2 rounded-md">
+                          {c.name}
+                        </span>
+                      );
+                    })}
+                  </td>
+                  <td className="text-center">
+                    {p.active ? "Đang bán" : "Ngừng bán"}
+                  </td>
+                  <td className="text-center">
+                    <EditOutlined
+                      onClick={() => {
+                        handleEdit(p);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })
+          : products.map((p) => {
+              return (
+                <tr key={p.pid}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      value={p.pid}
+                      name="pid"
+                      onChange={(e) => {
+                        selectProduct(e);
+                      }}
+                    />
+                  </td>
+                  <td className="text-center">{p.pid}</td>
+                  <td className="text-center">{p.title}</td>
+                  <td className="text-center">{p.price}</td>
+                  <td className="text-center">{p.description}</td>
+                  <td className="text-center">
+                    <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
+                  </td>
+                  <td className="text-center">
+                    {p.size.map((c, index) => {
+                      return (
+                        <span
+                          key={index}
+                          className="mr-2 bg-btn-filter p-2 rounded-md"
+                        >
+                          {c.name}
+                        </span>
+                      );
+                    })}
+                  </td>
+                  <td className="text-center">
+                    {p.color.map((c) => {
+                      return (
+                        <span className="mr-2 bg-btn-filter p-2 rounded-md">
+                          {c.name}
+                        </span>
+                      );
+                    })}
+                  </td>
+                  <td className="text-center">
+                    {p.active ? "Đang bán" : "Ngừng bán"}
+                  </td>
+                  <td className="text-center">
+                    <EditOutlined
+                      onClick={() => {
+                        handleEdit(p);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
       </TableCustom>
       <div className="text-center mt-4">
         <Pagination

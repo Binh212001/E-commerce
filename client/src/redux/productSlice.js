@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProduct, getProductByCategory, getProductByName, getProductByUserId } from "./productAction";
+import {
+  getProduct,
+  getProductByCategory,
+  getProductByName,
+  getProductByTitle,
+  getProductByUserId,
+} from "./productAction";
 
 const initialState = {
   count: 0,
   loading: false,
   products: [],
+  productSearch: [],
   message: "",
 };
 
@@ -67,6 +74,20 @@ const productSlice = createSlice({
         state.message = payload?.message;
       })
       .addCase(getProductByUserId.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload?.message;
+      })
+      .addCase(getProductByTitle.pending, (state) => {
+        state.loading = true;
+        state.message = "PENDING";
+      })
+      .addCase(getProductByTitle.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.count = payload.count;
+        state.productSearch = payload.data;
+        state.message = payload?.message;
+      })
+      .addCase(getProductByTitle.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload?.message;
       });
