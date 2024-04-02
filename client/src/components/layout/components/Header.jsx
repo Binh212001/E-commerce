@@ -1,4 +1,8 @@
-import { LoginOutlined, SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  LoginOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
 import { Avatar, Dropdown, Menu } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -13,6 +17,7 @@ function Header() {
   const debounceInput = useDebounce(keySearch, 500);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  console.log("🚀 ~ Header ~ user:", user);
   const handleSearch = (e) => {
     setKeySearch(e.target.value);
   };
@@ -41,11 +46,17 @@ function Header() {
           key: "0",
         },
         {
-          label: user.userId ? <Link to={`/user/update/${user.userId}`}>Cập nhật thông tin</Link> : null ,
+          label:
+            user?.userId || user?.data?.userId ? (
+              <Link to={`/user/update/${user.userId}`}>Cập nhật thông tin</Link>
+            ) : null,
           key: "1",
         },
         {
-          label: user.sellers ? <Link to={`/management/home`}>Quản lý</Link> : null,
+          label:
+            user?.sellers || user?.data?.sellers ? (
+              <Link to={`/management/home`}>Quản lý</Link>
+            ) : null,
           key: "2",
         },
       ]}
@@ -54,7 +65,9 @@ function Header() {
   return (
     <div className="w-full">
       <div className="text-center w-full bg-slugon-bg">
-        <h3 className="text-yellow-yody text-xl font-bold">Be good - Do good - Feel good</h3>
+        <h3 className="text-yellow-yody text-xl font-bold">
+          Be good - Do good - Feel good
+        </h3>
       </div>
       <div
         className="m-auto items-center my-9"

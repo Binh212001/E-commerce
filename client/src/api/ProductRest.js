@@ -35,7 +35,11 @@ const productRest = {
   },
   stopSale: (ids) => {
     const url = `${path}/stopSale`;
-    return baseApi.put(url,ids);
+    return baseApi.put(url, ids);
+  },
+  update: (data) => {
+    const url = `${path}/update`;
+    return baseApi.put(url, data);
   },
 };
 

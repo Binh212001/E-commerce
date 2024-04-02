@@ -18,12 +18,36 @@ function ProductForm({ mode, product, closeForm }) {
 
   const onSubmit = async (data) => {
     if (product) {
-      //update
+      try {
+        const fileExtension = data?.image[0].name
+          .split(".")
+          .pop()
+          .toLowerCase();
+        if (
+          !["jpg", "png", "jpeg", "gif", "webp", "tiff"].includes(fileExtension)
+        ) {
+          toast("Định dạng file phải  là png, jpg, jpeg, gif, webp, tiff");
+        } else {
+          await productRest.update({ ...data, id: product.pid });
+          const formData = new FormData();
+          formData.append("file", data.image[0]);
+          formData.append("productId", product.pid);
+          await uploadFile.uploadProduct(formData);
+          toast("Cập nhật  sản phẩm thành công");
+        }
+      } catch (error) {
+        console.log("🚀 ~ onSubmit ~ error:", error);
+      }
     } else {
       const id = Math.floor(Math.random() * 10000);
       try {
-        const fileExtension = data?.image[0].name.split(".").pop().toLowerCase();
-        if (!["jpg", "png", "jpeg", "gif", "webp", "tiff"].includes(fileExtension)) {
+        const fileExtension = data?.image[0].name
+          .split(".")
+          .pop()
+          .toLowerCase();
+        if (
+          !["jpg", "png", "jpeg", "gif", "webp", "tiff"].includes(fileExtension)
+        ) {
           toast("Định dạng file phải  là png, jpg, jpeg, gif, webp, tiff");
         } else {
           await productRest.create({ ...data, id, sellerId: user.data.userId });
@@ -31,9 +55,10 @@ function ProductForm({ mode, product, closeForm }) {
           formData.append("file", data.image[0]);
           formData.append("productId", id);
           await uploadFile.uploadProduct(formData);
+          setTimeout(() => {
+            toast("Thêm sản phẩm thành công");
+          }, 300);
           reset();
-
-          closeForm();
         }
       } catch (error) {
         console.log("🚀 ~ onSubmit ~ error:", error);
@@ -43,40 +68,63 @@ function ProductForm({ mode, product, closeForm }) {
   return (
     <div className=" mx-auto bg-white p-8 rounded-md shadow-md  mb-5">
       <ToastContainer />
-      <h2 className="text-2xl font-semibold mb-4">{mode ? "Thêm sản phẩm" : "Cập nhập sản phẩm"}</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
+      <h2 className="text-2xl font-semibold mb-4">
+        {mode ? "Thêm sản phẩm" : "Cập nhập sản phẩm"}
+      </h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4"
+      >
         <div>
-          <label htmlFor="title" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="title"
+            className="block text-xl font-medium text-gray-700"
+          >
             Title
           </label>
           <input
             type="text"
             id="title"
-            {...register("title", { required: "Tên sản phẩm phải dài hon 20 ký tự", min: 20 })}
+            defaultValue={product ? product.title : ""}
+            {...register("title", {
+              required: "Tên sản phẩm phải dài hon 20 ký tự",
+              min: 20,
+            })}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md sm:text-xl border-gray-300 rounded-md"
           />
           {errors.title && <span>{errors.title.message}</span>}
         </div>
         <div>
-          <label htmlFor="price" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="price"
+            className="block text-xl font-medium text-gray-700"
+          >
             Price
           </label>
           <input
             type="text"
             id="price"
-            {...register("price", { required: "Giá  phải là số.", pattern: "/^d+$/" })}
+            defaultValue={product ? product.price : ""}
+            {...register("price", {
+              required: "Giá  phải là số.",
+              pattern: "/^d+$/",
+            })}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md sm:text-xl border-gray-300 rounded-md"
           />
           {errors.price && <span>{errors.price.message}</span>}
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="description"
+            className="block text-xl font-medium text-gray-700"
+          >
             Description
           </label>
           <textarea
             id="description"
             rows="3"
+            defaultValue={product ? product.description : ""}
             {...register("description", { required: "Mô tả là bắt buộc." })}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-md sm:text-xl border-gray-300 rounded-md"
           ></textarea>
@@ -84,27 +132,77 @@ function ProductForm({ mode, product, closeForm }) {
         </div>
         <div></div>
         <div>
-          <label htmlFor="size" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="size"
+            className="block text-xl font-medium text-gray-700"
+          >
             Size
           </label>
-          <input type="checkbox" className="shadow-md" value="1" {...register("size")}></input> SM
-          <input type="checkbox" className="shadow-md" value="2" {...register("size")}></input> MD
-          <input type="checkbox" className="shadow-md" value="3" {...register("size")}></input> LG
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="1"
+            {...register("size")}
+          ></input>{" "}
+          SM
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="2"
+            {...register("size")}
+          ></input>{" "}
+          MD
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="3"
+            {...register("size")}
+          ></input>{" "}
+          LG
         </div>
         <div>
-          <label htmlFor="color" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="color"
+            className="block text-xl font-medium text-gray-700"
+          >
             Color
           </label>
-          <input type="checkbox" className="shadow-md" value="1" {...register("color")}></input> RED
-          <input type="checkbox" className="shadow-md" value="2" {...register("color")}></input> WHITE
-          <input type="checkbox" className="shadow-md" value="3" {...register("color")}></input> BLUE
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="1"
+            {...register("color")}
+          ></input>{" "}
+          RED
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="2"
+            {...register("color")}
+          ></input>{" "}
+          WHITE
+          <input
+            type="checkbox"
+            className="shadow-md"
+            value="3"
+            {...register("color")}
+          ></input>{" "}
+          BLUE
         </div>
 
         <div>
-          <label htmlFor="  " className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="  "
+            className="block text-xl font-medium text-gray-700"
+          >
             Category
           </label>
-          <select className="shadow-md" select="1" {...register("category")} id="category">
+          <select
+            className="shadow-md"
+            select="1"
+            {...register("category")}
+            id="category"
+          >
             <option value="quan">Quần</option>
             <option value="ao">Áo</option>
             <option value="vay">Váy</option>
@@ -112,7 +210,10 @@ function ProductForm({ mode, product, closeForm }) {
           </select>
         </div>
         <div>
-          <label htmlFor="image" className="block text-xl font-medium text-gray-700">
+          <label
+            htmlFor="image"
+            className="block text-xl font-medium text-gray-700"
+          >
             Image
           </label>
           <input

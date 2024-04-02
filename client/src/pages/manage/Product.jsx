@@ -1,8 +1,8 @@
-import { SearchOutlined } from "@ant-design/icons";
+import { EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { BASEURL } from "../../api/BaseApi";
 import productRest from "../../api/ProductRest";
@@ -15,25 +15,25 @@ function Product() {
   const [keyword, setKeyword] = useState("");
   const [listStopSale, setListStopSale] = useState([]);
   const { user } = useSelector((state) => state.auth);
-  const { userId } = useParams();
+  const [productSelect, setProductSelect] = useState(null);
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [current, setCurrent] = useState(1);
-  const limit =12;
-  const { products , count } = useSelector((state) => state.product);
-  
+  const limit = 12;
+  const { products, count } = useSelector((state) => state.product);
 
   useEffect(() => {
-    dispatch(getProductByUserId({limit,page:current-1, userId }));
-  }, [dispatch, current , userId]);
+    dispatch(
+      getProductByUserId({ limit, page: current - 1, useId: user.useId })
+    );
+  }, [dispatch, current, user]);
 
   const changePage = (currentPage) => {
     setCurrent(currentPage);
   };
-
 
   const handleShowForm = () => {
     setShowForm(!showForm);
@@ -46,10 +46,12 @@ function Product() {
     }
     try {
       await productRest.stopSale(listStopSale);
-      dispatch(getProductByUserId({page:current-1 , limit, userId }));
+      dispatch(
+        getProductByUserId({ page: current - 1, limit, userId: user.userId })
+      );
       toast("Thành công");
     } catch (error) {
-      console.log("🚀 ~ handleStopSell ~ error:", error)
+      console.log("🚀 ~ handleStopSell ~ error:", error);
       toast("Thất bại");
     }
   };
@@ -67,7 +69,13 @@ function Product() {
     const data = e.target.value;
     setListStopSale([...listStopSale, data]);
   };
-  
+
+  const handleEdit = (p) => {
+    setProductSelect(p);
+    setShowForm(true);
+    setMode(false);
+  };
+
   if (!user?.data?.sellers) {
     return (
       <div
@@ -84,7 +92,11 @@ function Product() {
     <div className="container m-auto">
       <ToastContainer />
       {showForm ? (
-        <ProductForm mode={mode} closeForm={closeForm} />
+        <ProductForm
+          mode={mode}
+          closeForm={closeForm}
+          product={productSelect}
+        />
       ) : (
         <div className="my-4 flex justify-between items-center">
           <div>
@@ -124,9 +136,12 @@ function Product() {
                 <a href={`${BASEURL}/images/${p.image}`}>{p.image}</a>
               </td>
               <td className="text-center">
-                {p.size.map((c , index) => {
+                {p.size.map((c, index) => {
                   return (
-                    <span  key={index} className="mr-2 bg-btn-filter p-2 rounded-md">
+                    <span
+                      key={index}
+                      className="mr-2 bg-btn-filter p-2 rounded-md"
+                    >
                       {c.name}
                     </span>
                   );
@@ -144,13 +159,24 @@ function Product() {
               <td className="text-center">
                 {p.active ? "Đang bán" : "Ngừng bán"}
               </td>
+              <td className="text-center">
+                <EditOutlined
+                  onClick={() => {
+                    handleEdit(p);
+                  }}
+                />
+              </td>
             </tr>
           );
         })}
       </TableCustom>
-      <div  className="text-center mt-4">
-
-      <Pagination total={count} pageSize={limit}current={current} onChange={(currentPage) => changePage(currentPage)} />
+      <div className="text-center mt-4">
+        <Pagination
+          total={count}
+          pageSize={limit}
+          current={current}
+          onChange={(currentPage) => changePage(currentPage)}
+        />
       </div>
     </div>
   );
@@ -167,4 +193,5 @@ const col = [
   "Kích cỡ",
   "Màu sắc",
   "Đang bán",
+  "Chỉnh sửa",
 ];

@@ -9,9 +9,9 @@ const routeConfig = {
   search: "product/search/:name",
   auth: "/auth",
   managementHome: "/management/home/",
-  managementProduct: "/management/product/:userId",
+  managementProduct: "/management/product/",
   managementProductSearch: "/management/product/search/:id",
-  managementBill: "/management/bill/:userId",
+  managementBill: "/management/bill/",
   updateUser: "/user/update/:userId",
 };
 

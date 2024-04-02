@@ -24,14 +24,17 @@ const Filter = () => {
   ];
   const [size, setSize] = useState(false);
   const [color, setColor] = useState(false);
-  const [price, setPrice] = useState(false);
 
   return (
     <div className="pr-12">
       <div>
         <div className="flex justify-between mb-2">
           <h4>Kích thước</h4>
-          {!size ? <DownOutlined onClick={() => setSize(!size)} /> : <UpOutlined onClick={() => setSize(!size)} />}
+          {!size ? (
+            <DownOutlined onClick={() => setSize(!size)} />
+          ) : (
+            <UpOutlined onClick={() => setSize(!size)} />
+          )}
         </div>
         {size ? (
           <div className="flex gap-4">
@@ -48,7 +51,11 @@ const Filter = () => {
       <div>
         <div className="flex justify-between">
           <h4>Màu sắc</h4>
-          {!color ? <DownOutlined onClick={() => setColor(!color)} /> : <UpOutlined onClick={() => setColor(!color)} />}
+          {!color ? (
+            <DownOutlined onClick={() => setColor(!color)} />
+          ) : (
+            <UpOutlined onClick={() => setColor(!color)} />
+          )}
         </div>
         {color ? (
           <div className="flex gap-4">

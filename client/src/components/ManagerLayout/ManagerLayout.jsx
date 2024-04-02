@@ -25,7 +25,7 @@ function ManagerLayout({ children }) {
           <ul className="flex justify-between w-[500px] mb-10 ">
             {managementMenu.map((link, index) => {
               return (
-                <CustomLink to={`/management/${link.to}/${user.data.userId}`} key={index}>
+                <CustomLink to={`/management/${link.to}`} key={index}>
                   {link.displayName}
                 </CustomLink>
               );
