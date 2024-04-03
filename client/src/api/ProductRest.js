@@ -7,6 +7,10 @@ const productRest = {
 
     return baseApi.get(url, { params });
   },
+  getProductByPrice: (params) => {
+    const url = `${path}/price`;
+    return baseApi.get(url, { params });
+  },
   getProductByCategory: (params) => {
     const url = `${path}/category`;
 

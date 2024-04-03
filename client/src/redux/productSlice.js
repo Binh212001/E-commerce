@@ -3,6 +3,7 @@ import {
   getProduct,
   getProductByCategory,
   getProductByName,
+  getProductByPrice,
   getProductByTitle,
   getProductByUserId,
 } from "./productAction";
@@ -60,6 +61,20 @@ const productSlice = createSlice({
         state.message = payload?.message;
       })
       .addCase(getProductByName.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload?.message;
+      })
+      .addCase(getProductByPrice.pending, (state) => {
+        state.loading = true;
+        state.message = "PENDING";
+      })
+      .addCase(getProductByPrice.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.count = payload.count;
+        state.products = payload.data;
+        state.message = payload?.message;
+      })
+      .addCase(getProductByPrice.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload?.message;
       })

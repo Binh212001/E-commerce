@@ -70,3 +70,17 @@ export const getProductByTitle = createAsyncThunk(
     }
   }
 );
+export const getProductByPrice = createAsyncThunk(
+  "getProductByPrice/productSlice",
+  async (prices) => {
+    try {
+      const res = await productRest.getProductByPrice({
+        minPrice: prices[0] ? prices[0] : 0,
+        maxPrice: prices[1] ? prices[1] : 20000000,
+      });
+      return res;
+    } catch (error) {
+      console.log("🚀 ~ getProduct ~ error:", error);
+    }
+  }
+);

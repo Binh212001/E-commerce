@@ -74,7 +74,7 @@ function Bill() {
     <div className="container m-auto">
       <ToastContainer />
       <div className="flex justify-between items-center my-4">
-        <div>
+        <div className="flex gap-2">
           <Button
             disabled={listBillSelect.length > 0 ? false : true}
             onClick={() => deleteBill()}
@@ -156,7 +156,7 @@ function Bill() {
               );
             })}
       </TableCustom>
-      {billSearch.length == 0 ? (
+      {billSearch.length === 0 ? (
         <div className="text-center mt-4">
           <Pagination
             total={count}
