@@ -2,7 +2,6 @@ import { EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { BASEURL } from "../../api/BaseApi";
 import productRest from "../../api/ProductRest";
@@ -22,7 +21,6 @@ function Product() {
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [current, setCurrent] = useState(1);
   const limit = 12;

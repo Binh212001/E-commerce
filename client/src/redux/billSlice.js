@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBillByUserId, getBills } from "./billAction";
+import { getBillByUserId, getBills, getBillsByCus } from "./billAction";
 
 const initialState = {
   count: 0,
   loading: false,
   bills: [],
+  billSearch: [],
   message: "",
 };
 
@@ -28,6 +29,20 @@ const billSlice = createSlice({
         state.loading = false;
         state.error = payload?.message;
       })
+      .addCase(getBillsByCus.pending, (state) => {
+        state.loading = true;
+        state.message = "PENDING";
+      })
+      .addCase(getBillsByCus.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.count = payload.count;
+        state.billSearch = payload.data;
+        state.message = payload?.message;
+      })
+      .addCase(getBillsByCus.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload?.message;
+      })
       .addCase(getBills.pending, (state) => {
         state.loading = true;
         state.message = "PENDING";
@@ -41,8 +56,7 @@ const billSlice = createSlice({
       .addCase(getBills.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload?.message;
-      })
-      
+      });
   },
 });
 

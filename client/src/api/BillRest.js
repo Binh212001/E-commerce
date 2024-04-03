@@ -17,9 +17,18 @@ const billRest = {
   },
   export: (data) => {
     const url = `${path}/pdf`;
-    return baseApi.post(url, data,{
-      responseType: 'arraybuffer'
+    return baseApi.post(url, data, {
+      responseType: "arraybuffer",
     });
+  },
+  delete: (data) => {
+    const numbersData = data.map((str) => parseInt(str, 10));
+    const url = `${path}/delete`;
+    return baseApi.post(url, numbersData);
+  },
+  getBillByCus: (params) => {
+    const url = `${path}/search`;
+    return baseApi.get(url, { params });
   },
 };
 

@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableCustom from "../../custom/TableCustom";
-import { getBills } from "../../redux/billAction";
-import { Button, Pagination } from "antd";
+import { getBills, getBillsByCus } from "../../redux/billAction";
+import { Button, Input, Pagination } from "antd";
 import billRest from "../../api/BillRest";
+import { SearchOutlined } from "@ant-design/icons";
+import { ToastContainer, toast } from "react-toastify";
 
 function Bill() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [currentPage, setCurrentPage] = useState(1);
   const [listBillSelect, setListBillSelect] = useState([]);
-  const [file, setFile] = useState(null);
+  console.log("🚀 ~ Bill ~ listBillSelect:", listBillSelect);
+  const [keyword, setKeyword] = useState("");
 
   const limit = 12;
-  const { bills, count } = useSelector((state) => state.bill);
+  const { bills, count, billSearch } = useSelector((state) => state.bill);
 
   const dispatch = useDispatch();
 
@@ -32,15 +35,27 @@ function Bill() {
   const exportBill = async () => {
     try {
       const response = await billRest.export(listBillSelect);
-      const file = new Blob([response], {type: 'application/pdf'});
-            const fileURL = URL.createObjectURL(file);
-            const link = document.createElement('a');
-            link.href = fileURL;
-            link.download = new Date() + ".pdf";
-            link.click();
+      const file = new Blob([response], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.download = new Date() + ".pdf";
+      link.click();
     } catch (error) {
-      console.error('Error exporting bill:', error);
+      console.error("Error exporting bill:", error);
     }
+  };
+  const deleteBill = async () => {
+    try {
+      const data = await billRest.delete(listBillSelect);
+      toast(data);
+      dispatch(getBills({ limit, page: currentPage - 1 }));
+    } catch (error) {
+      console.log("🚀 ~ deleteBill ~ error:", error);
+    }
+  };
+  const searchBill = async () => {
+    dispatch(getBillsByCus(keyword));
   };
 
   if (!user?.data?.sellers) {
@@ -57,46 +72,100 @@ function Bill() {
   }
   return (
     <div className="container m-auto">
-      <div>
-        <Button onClick={() => exportBill()}>Xuất hóa đơn</Button>
+      <ToastContainer />
+      <div className="flex justify-between items-center my-4">
+        <div>
+          <Button
+            disabled={listBillSelect.length > 0 ? false : true}
+            onClick={() => deleteBill()}
+          >
+            Xóa hóa đơn
+          </Button>
+          <Button
+            disabled={listBillSelect.length > 0 ? false : true}
+            onClick={() => exportBill()}
+          >
+            Xuất hóa đơn
+          </Button>
+        </div>
+        <div className="flex gap-2">
+          <Input
+            placeholder="Search bill by customer"
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <Button className="items-center" onClick={() => searchBill()}>
+            <SearchOutlined />
+          </Button>
+        </div>
       </div>
       {/* <input type="file" value={file}  />
       <Button /> */}
 
       <TableCustom col={col}>
-        {bills.map((b) => {
-          return (
-            <tr key={b.id}>
-              <td className="text-center">
-                <input
-                  type="checkbox"
-                  value={b.id}
-                  onChange={(e) => selectBill(e)}
-                />
-              </td>
-              <td className="text-center">{b.id}</td>
-              <td className="text-center">{b.product.title}</td>
-              <td className="text-center">
-                {b.account.firstName + b.account.lastName}
-              </td>
-              <td className="text-center">{b.product.price}</td>
-              <td className="text-center">{b.quantity}</td>
-              <td className="text-center">{b.quantity * b.product.price}</td>
-              <td className="text-center">{b.size}</td>
-              <td className="text-center">{b.color}</td>
-              <td className="text-center">{b.createdAt}</td>
-            </tr>
-          );
-        })}
+        {billSearch.length > 0
+          ? billSearch.map((b) => {
+              return (
+                <tr key={b.id}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      value={b.id}
+                      onChange={(e) => selectBill(e)}
+                    />
+                  </td>
+                  <td className="text-center">{b.id}</td>
+                  <td className="text-center">{b.product.title}</td>
+                  <td className="text-center">
+                    {b.account.firstName + b.account.lastName}
+                  </td>
+                  <td className="text-center">{b.product.price}</td>
+                  <td className="text-center">{b.quantity}</td>
+                  <td className="text-center">
+                    {b.quantity * b.product.price}
+                  </td>
+                  <td className="text-center">{b.size}</td>
+                  <td className="text-center">{b.color}</td>
+                  <td className="text-center">{b.createdAt}</td>
+                </tr>
+              );
+            })
+          : bills.map((b) => {
+              return (
+                <tr key={b.id}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      value={b.id}
+                      onChange={(e) => selectBill(e)}
+                    />
+                  </td>
+                  <td className="text-center">{b.id}</td>
+                  <td className="text-center">{b.product.title}</td>
+                  <td className="text-center">
+                    {b.account.firstName + b.account.lastName}
+                  </td>
+                  <td className="text-center">{b.product.price}</td>
+                  <td className="text-center">{b.quantity}</td>
+                  <td className="text-center">
+                    {b.quantity * b.product.price}
+                  </td>
+                  <td className="text-center">{b.size}</td>
+                  <td className="text-center">{b.color}</td>
+                  <td className="text-center">{b.createdAt}</td>
+                </tr>
+              );
+            })}
       </TableCustom>
-      <div className="text-center mt-4">
-        <Pagination
-          total={count}
-          pageSize={limit}
-          current={currentPage}
-          onChange={(currentPage) => changePage(currentPage)}
-        />
-      </div>
+      {billSearch.length == 0 ? (
+        <div className="text-center mt-4">
+          <Pagination
+            total={count}
+            pageSize={limit}
+            current={currentPage}
+            onChange={(currentPage) => changePage(currentPage)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
