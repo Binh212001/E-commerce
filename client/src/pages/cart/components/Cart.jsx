@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBillByUserId } from "../../../redux/billAction";
+import { useNavigate } from "react-router-dom";
 function Cart() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  if (!user?.data?.userId) {
+    navigate("/auth");
+  }
   useEffect(() => {
     dispatch(
       getBillByUserId({
-        userId: user.data.userId,
+        userId: user?.data?.userId,
       })
     );
   }, [user, dispatch]);

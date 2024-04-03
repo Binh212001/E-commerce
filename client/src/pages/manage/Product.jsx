@@ -18,6 +18,7 @@ function Product() {
   const [listStopSale, setListStopSale] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const [productSelect, setProductSelect] = useState(null);
+
   //mode Add or  Edit
   const [mode, setMode] = useState(true);
   const dispatch = useDispatch();

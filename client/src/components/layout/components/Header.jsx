@@ -17,7 +17,6 @@ function Header() {
   const debounceInput = useDebounce(keySearch, 500);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  console.log("🚀 ~ Header ~ user:", user);
   const handleSearch = (e) => {
     setKeySearch(e.target.value);
   };
@@ -34,23 +33,33 @@ function Header() {
     <Menu
       items={[
         {
-          label: (
-            <span
-              onClick={() => {
-                handelLogout();
-              }}
-            >
-              Dang Xuat
-            </span>
-          ),
+          label:
+            user?.userId || user?.data?.userId ? (
+              <span
+                onClick={() => {
+                  handelLogout();
+                }}
+              >
+                Dang Xuat
+              </span>
+            ) : null,
           key: "0",
         },
         {
           label:
             user?.userId || user?.data?.userId ? (
-              <Link to={`/user/update/${user.userId}`}>Cập nhật thông tin</Link>
+              <Link to={`/user/update/${user?.data?.userId}`}>
+                Cập nhật thông tin
+              </Link>
             ) : null,
           key: "1",
+        },
+        {
+          label:
+            user?.userId || !user?.data?.userId ? (
+              <Link to={`/auth`}>Đăng nhập</Link>
+            ) : null,
+          key: "5",
         },
         {
           label:
@@ -62,6 +71,7 @@ function Header() {
       ]}
     />
   );
+
   return (
     <div className="w-full">
       <div className="text-center w-full bg-slugon-bg">
@@ -95,21 +105,12 @@ function Header() {
         </div>
 
         <div className="flex justify-center  font-bold  gap-6">
-          {user ? (
-            <Dropdown overlay={menu} placement="bottom">
-              <span>
-                <Avatar size={"small"} />
-              </span>
-            </Dropdown>
-          ) : (
-            <Link to="/auth">
-              <LoginOutlined
-                style={{
-                  frontSize: "20px",
-                }}
-              />
-            </Link>
-          )}
+          <Dropdown overlay={menu} placement="bottom">
+            <span>
+              <Avatar size={"small"} />
+            </span>
+          </Dropdown>
+
           <Link to={user ? "/cart" : "/auth"}>
             <ShoppingCartOutlined
               style={{

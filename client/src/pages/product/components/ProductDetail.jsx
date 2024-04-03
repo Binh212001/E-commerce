@@ -49,10 +49,15 @@ function ProductDetail() {
     setSelectColor(index);
     setColor(name);
   };
-  console.log(user);
+
   const buyProduct = async () => {
-    if (!user.data.phone || !user.data.addressDetail || !user.data.province) {
-      navigate("/");
+    if (!user?.data?.userId) {
+      alert("Bạn cần đăng nhập");
+      return;
+    }
+    if (!user?.data?.phone || !user?.data?.addressDetail) {
+      alert("Bạn cần cập nhật sdt và dịa chỉ.");
+      return;
     }
     try {
       await billRest.create({
