@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto'; // Importing Chart.js version 3
+import React, { useEffect, useRef } from "react";
+import Chart from "chart.js/auto"; // Importing Chart.js version 3
 
 const LineChart = ({ data, options }) => {
   const chartRef = useRef(null);
@@ -7,7 +7,7 @@ const LineChart = ({ data, options }) => {
   useEffect(() => {
     if (chartRef && chartRef.current) {
       const myChart = new Chart(chartRef.current, {
-        type: 'line',
+        type: "line",
         data: data,
         options: options,
       });
